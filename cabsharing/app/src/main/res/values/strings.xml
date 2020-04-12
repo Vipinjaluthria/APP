@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">profileinformation</string>
     <string name="name">NAME</string>
+    <string name="search_bookings">Search Bookings</string>
+    <string name="profile">Profile</string>
+    <string name="add_bookings">Add Bookings</string>
 
 </resources>

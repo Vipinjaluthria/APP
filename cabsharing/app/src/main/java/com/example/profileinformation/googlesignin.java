@@ -148,7 +148,7 @@ public class googlesignin extends AppCompatActivity {
 
         user.put("Family name",personGivenName);
 
-        DocumentReference myref = fstore.collection("vipin").document(userid);
+        DocumentReference myref = fstore.collection("PROFILE").document(userid);
         myref.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

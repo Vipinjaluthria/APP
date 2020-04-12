@@ -66,7 +66,7 @@ public class profile extends AppCompatActivity {
 
 
         userid= Objects.requireNonNull(mfirebase.getCurrentUser()).getUid();
-        DocumentReference myref =fstore.collection("vipin").document(userid);
+        DocumentReference myref =fstore.collection("PROFILE").document(userid);
         myref.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {

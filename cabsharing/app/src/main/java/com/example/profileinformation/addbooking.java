@@ -3,6 +3,7 @@ package com.example.profileinformation;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -53,7 +54,7 @@ public class addbooking extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         assert acct != null;
-        username=acct.getGivenName();
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,9 +69,9 @@ public class addbooking extends AppCompatActivity {
                 {
                     time.setError("required");
                 }
-        if( !TIME.isEmpty() && !PLACE.isEmpty()) {
+        if( !TIME.isEmpty() && !PLACE.isEmpty() && !Laguage.isEmpty()) {
             Map<String, Object> user = new HashMap<>();
-            DocumentReference myref = fstore.collection(username).document(userid);
+            DocumentReference myref = fstore.collection("Bookings").document(userid);
             user.put("time",TIME);
             user.put("place",PLACE);
             user.put("Laguage",Laguage);
@@ -79,6 +80,7 @@ public class addbooking extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
                         Toast.makeText(addbooking.this, "confirmed booking", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(addbooking.this,firstactivity.class));
                     } else {
                         Toast.makeText(addbooking.this, "Error Ocurr", Toast.LENGTH_SHORT).show();
                     }

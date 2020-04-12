@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/addbooking"
+    android:title="@string/add_bookings">
+
+
+</item>
+    <item android:id="@+id/searchbookings"
+        android:title="@string/search_bookings">
+
+    </item>
+    <item
+        android:id="@+id/profile"
+        android:title="@string/profile" />
+
+</menu>

@@ -13,20 +13,30 @@ class ProductViewHolder extends RecyclerView.ViewHolder {
         view = itemView;
     }
 
-    void setlaguage(String Laguage) {
+    void setNAME(String NAME) {
         TextView textView = view.findViewById(R.id.textView5);
-        textView.setText(Laguage);
+        textView.setText(NAME);
     }
 
-    void settime(String time) {
+    void setCONTACT(String CONTACT) {
         TextView textView = view.findViewById(R.id.textView6);
-        textView.setText(time);
+        textView.setText(CONTACT);
 
 
     }
 
-    void setplace(String place) {
+    void setCARNAME(String CARNAME) {
         TextView textView = view.findViewById(R.id.textView7);
-        textView.setText(place);
+        textView.setText(CARNAME);
+    }
+    void setDRIVERNAME(String DRIVERNAME)
+    {
+        TextView textView = view.findViewById(R.id.textView8);
+        textView.setText(DRIVERNAME);
+    }
+    void setADDITIONALLAGUAGE(String ADDITIONALLAGUAGE)
+    {
+        TextView textView=view.findViewById(R.id.textView9);
+        textView.setText(ADDITIONALLAGUAGE);
     }
 }

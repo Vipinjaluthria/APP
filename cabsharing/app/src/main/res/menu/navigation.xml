@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:id="@+id/addbooking"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ExtraText">
+<group>
+    <item
+        android:id="@+id/profile"
+
+        android:title="@string/profile" />
+
+    <item android:id="@+id/Addbooking"
     android:title="@string/add_bookings">
 
 
 </item>
-    <item android:id="@+id/searchbookings"
+    <item android:id="@+id/Searchbookings"
+
         android:title="@string/search_bookings">
 
     </item>
-    <item
-        android:id="@+id/profile"
-        android:title="@string/profile" />
+</group>
 
 </menu>

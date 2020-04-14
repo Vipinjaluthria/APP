@@ -1,30 +1,46 @@
 package com.example.profileinformation;
 
 public class Modelclass {
-   private String Laguage;
-    private String time;
-    private String place;
+    private String NAME;
+    private String CONTACT;
 
-      public  Modelclass()
-      {
+    private String DRIVERNAME;
+    private String ADDITIONALLAGUAGE;
+    private String CARNAME;
 
-      }
+    public Modelclass()
+    {
 
-    public Modelclass(String laguage, String time, String place) {
-       this.Laguage = laguage;
-        this.time = time;
-        this.place = place;
+    }
+    public Modelclass(String name, String contact, String drivername, String additinllaguage, String cabname) {
+        NAME = name;
+        CONTACT = contact;
+        DRIVERNAME = drivername;
+        ADDITIONALLAGUAGE = additinllaguage;
+
+        CARNAME = cabname;
     }
 
-    public String getLaguage() {
-        return Laguage;
+    public String getNAME() {
+        return NAME;
     }
 
-    public String getTime() {
-        return time;
+    public String getCONTACT() {
+        return CONTACT;
     }
 
-    public String getPlace() {
-        return place;
+    public String getDRIVERNAME() {
+        return DRIVERNAME;
+    }
+
+
+
+
+    public String getADDITIONALLAGUAGE() {
+        return ADDITIONALLAGUAGE;
+    }
+
+    public String getCARNAME() {
+        return CARNAME;
     }
 }

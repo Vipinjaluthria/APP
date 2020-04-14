@@ -1,70 +1,104 @@
 package com.example.profileinformation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
+import com.google.android.material.navigation.NavigationView;
 
-public class firstactivity extends AppCompatActivity {
+import java.util.Objects;
+
+public class firstactivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     GoogleSignInClient mGoogleSignInClient;
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle toggle;
+  Toolbar toolbar;
+    NavigationView navigationView;
 
-    Button add,search;
 
-    ImageView Profile;
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firstactivity);
-        add=findViewById(R.id.button2);
-        Profile = findViewById(R.id.imageView);
-        search=findViewById(R.id.button4);
-        final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        assert acct != null;
-        final Uri personPhoto=acct.getPhotoUrl();
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = findViewById(R.id.drawer);
+        navigationView = findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener(this);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+    }
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            // to close application on back pressed button
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
+            super.onBackPressed();
+        }
+    }
 
-        Glide.with(this).load(personPhoto).into(Profile);
-        Profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(firstactivity.this, profile.class));
-            }
-        });
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(firstactivity.this,addbooking.class));
-            }
-        });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(firstactivity.this,Searchbookings.class));
-            }
-        });
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(toggle.onOptionsItemSelected(item))
+        {
+              return true;
+        }
+        else {
 
 
+            return super.onOptionsItemSelected(item);
+        }
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId())
+        {
+            case R.id.Addbooking:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(this,addbooking.class));
+               break;
+            case R.id.Searchbookings
+                   :
+                drawerLayout.closeDrawer(GravityCompat.START);
 
-
-
+            startActivity(new Intent(this,Searchbookings.class));
+                break;
+            case  R.id.profile :
+                drawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(this,profile.class));
+                break;
+        }
+        return false;
     }
 }
+
+
+
+
+
+
+
+

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,21 +25,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class addbooking extends AppCompatActivity {
-   EditText time,laguage,place;
+   EditText name,contact,carname,drivername,additionallaguage;
    FirebaseAuth mfirebase;
    FirebaseFirestore fstore;
+   DatePicker datePicker;
    Button confirm;
-   String userid,username;
+   String userid;
    GoogleSignInClient mGoogleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addbooking);
-        time=findViewById(R.id.editText);
-        laguage=findViewById(R.id.editText2);
+        name=findViewById(R.id.name);
+        datePicker=findViewById(R.id.datepicker);
+        contact=findViewById(R.id.contact);
         mfirebase=FirebaseAuth.getInstance();
         fstore=FirebaseFirestore.getInstance();
-        place=findViewById(R.id.editText3);
+       carname=findViewById(R.id.carname);
+       drivername=findViewById(R.id.driver);
+       additionallaguage=findViewById(R.id.additionallaguage);
+
+
 
         confirm=findViewById(R.id.button3);
 
@@ -58,23 +66,41 @@ public class addbooking extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String TIME= time.getText().toString();
-                final String Laguage=laguage.getText().toString();
-                final String PLACE=place.getText().toString();
-                if(PLACE.isEmpty())
+                final String DRIVERNAME=drivername.getText().toString();
+
+                final String   ADDITIONAL_LAGUAGE=additionallaguage.getText().toString();
+                final String NAME= name.getText().toString();
+                final String CONTACT=contact.getText().toString();
+                final String CARNAME=carname.getText().toString();
+                if(CONTACT.isEmpty())
                 {
-                    place.setError("required");
+                    contact.setError("required");
                 }
-                if(TIME.isEmpty())
+                if(NAME.isEmpty())
                 {
-                    time.setError("required");
+                    name.setError("required");
                 }
-        if( !TIME.isEmpty() && !PLACE.isEmpty() && !Laguage.isEmpty()) {
+                if(CARNAME.isEmpty())
+                {
+                    carname.setError("required");
+                }
+                if(DRIVERNAME.isEmpty())
+                {
+                    drivername.setError("required");
+                }
+                if(ADDITIONAL_LAGUAGE.isEmpty())
+                {
+                    additionallaguage.setError("required");
+                }
+        if( !NAME.isEmpty() && !CONTACT.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty() && !ADDITIONAL_LAGUAGE.isEmpty() ) {
             Map<String, Object> user = new HashMap<>();
             DocumentReference myref = fstore.collection("Bookings").document(userid);
-            user.put("time",TIME);
-            user.put("place",PLACE);
-            user.put("Laguage",Laguage);
+            user.put("DRIVERNAME",DRIVERNAME);
+            user.put("ADDITIONALLAGUAGE",ADDITIONAL_LAGUAGE);
+            user.put("NAME",NAME);
+            user.put("CONTACT",CONTACT);
+
+            user.put("CARNAME",CARNAME);
             myref.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -89,10 +115,7 @@ public class addbooking extends AppCompatActivity {
 
 
         }
-        else
-        {
-            laguage.setError("laguage should be 0 to 10");
-        }
+
 
             }
         });

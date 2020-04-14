@@ -15,6 +15,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.time.Duration;
+
 public class Searchbookings extends AppCompatActivity {
 
     private FirestoreRecyclerAdapter<Modelclass,ProductViewHolder> adapter;
@@ -38,9 +40,12 @@ public class Searchbookings extends AppCompatActivity {
                 adapter = new FirestoreRecyclerAdapter<Modelclass, ProductViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Modelclass model) {
-             holder.setlaguage("Laguage - "+model.getLaguage());
-             holder.setplace("Place - "+model.getPlace());
-             holder.settime("Time - "+model.getTime());
+            holder.setCARNAME("CARNAME - "+model.getCARNAME());
+           holder.setCONTACT("CONTACT - "+model.getCONTACT());
+            holder.setDRIVERNAME("DRIVER NAME - "+model.getDRIVERNAME());
+            holder.setNAME("NAME - "+model.getNAME());
+            holder.setADDITIONALLAGUAGE("ADDITINAL LAGUAGE - "+model.getADDITIONALLAGUAGE());
+
             }
 
 

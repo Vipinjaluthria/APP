@@ -14,7 +14,8 @@
         <activity android:name=".Searchbookings"></activity>
         <activity android:name=".addbooking" />
         <activity android:name=".profile" />
-        <activity android:name=".firstactivity" />
+        <activity android:name=".firstactivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".googlesignin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

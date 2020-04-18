@@ -1,7 +1,9 @@
 package com.example.profileinformation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,8 +16,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-
-import java.time.Duration;
 
 public class Searchbookings extends AppCompatActivity {
 
@@ -31,20 +31,20 @@ public class Searchbookings extends AppCompatActivity {
        recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         fstore = FirebaseFirestore.getInstance();
-
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Query query = fstore.collection("Bookings");
         FirestoreRecyclerOptions<Modelclass> options = new FirestoreRecyclerOptions.Builder<Modelclass>().setQuery(query, Modelclass.class).build();
-
-                adapter = new FirestoreRecyclerAdapter<Modelclass, ProductViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<Modelclass, ProductViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Modelclass model) {
             holder.setCARNAME("CARNAME - "+model.getCARNAME());
            holder.setCONTACT("CONTACT - "+model.getCONTACT());
             holder.setDRIVERNAME("DRIVER NAME - "+model.getDRIVERNAME());
             holder.setNAME("NAME - "+model.getNAME());
-            holder.setADDITIONALLAGUAGE("ADDITINAL LAGUAGE - "+model.getADDITIONALLAGUAGE());
+            holder.setADDITIONALLUGGAGE("ADDITIONAL LUGGAGE - "+model.getADDITIONALLUGGAGE());
+            holder.setDATE("DATE - "+model.getDATE());
+            holder.setTIME("TIME - "+model.getTIME());
 
             }
 
@@ -60,13 +60,12 @@ public class Searchbookings extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
-    }
-    @Override
-    protected void onStart() {
+        }
+        @Override
+        protected void onStart() {
         super.onStart();
         adapter.startListening();
-    }
-
+        }
     @Override
     protected void onStop() {
         super.onStop();
@@ -75,4 +74,11 @@ public class Searchbookings extends AppCompatActivity {
             adapter.stopListening();
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        startActivity(new Intent(getApplicationContext(),firstactivity.class));
+        return super.onOptionsItemSelected(item);
     }
+}
+

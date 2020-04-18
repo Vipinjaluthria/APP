@@ -22,7 +22,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="4dp"
-            />
+        />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,10 +31,7 @@
             android:layout_marginTop="310dp"
             android:textStyle="italic"
             />
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/famelayout"/>
+
 
 
     </LinearLayout>

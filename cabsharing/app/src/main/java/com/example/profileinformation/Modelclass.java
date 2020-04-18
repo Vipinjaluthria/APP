@@ -5,20 +5,33 @@ public class Modelclass {
     private String CONTACT;
 
     private String DRIVERNAME;
-    private String ADDITIONALLAGUAGE;
+    private String ADDITIONALLUGGAGE;
     private String CARNAME;
+    private String TIME;
+
+    public String getTIME() {
+        return TIME;
+    }
+
+
+
+    private String DATE;
 
     public Modelclass()
     {
 
     }
-    public Modelclass(String name, String contact, String drivername, String additinllaguage, String cabname) {
+    public Modelclass(String name, String contact, String drivername, String additinllaguage, String cabname,String date,String time) {
         NAME = name;
         CONTACT = contact;
         DRIVERNAME = drivername;
-        ADDITIONALLAGUAGE = additinllaguage;
-
+        ADDITIONALLUGGAGE = additinllaguage;
+        DATE=date;
+        TIME=time;
         CARNAME = cabname;
+    }
+    public String getDATE() {
+        return DATE;
     }
 
     public String getNAME() {
@@ -36,8 +49,8 @@ public class Modelclass {
 
 
 
-    public String getADDITIONALLAGUAGE() {
-        return ADDITIONALLAGUAGE;
+    public String getADDITIONALLUGGAGE() {
+        return ADDITIONALLUGGAGE;
     }
 
     public String getCARNAME() {

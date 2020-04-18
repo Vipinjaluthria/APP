@@ -34,9 +34,19 @@ class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView textView = view.findViewById(R.id.textView8);
         textView.setText(DRIVERNAME);
     }
-    void setADDITIONALLAGUAGE(String ADDITIONALLAGUAGE)
+    void setADDITIONALLUGGAGE(String ADDITIONALLUGGAGE)
     {
         TextView textView=view.findViewById(R.id.textView9);
-        textView.setText(ADDITIONALLAGUAGE);
+        textView.setText(ADDITIONALLUGGAGE);
+    }
+    void setDATE(String DATE)
+    {
+        TextView textView=view.findViewById(R.id.textView10);
+        textView.setText(DATE);
+    }
+    void setTIME(String TIME)
+    {
+        TextView textView=view.findViewById(R.id.textView11);
+        textView.setText(TIME);
     }
 }

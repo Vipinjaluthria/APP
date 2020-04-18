@@ -20,7 +20,6 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Objects;
 
 public class firstactivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    GoogleSignInClient mGoogleSignInClient;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
   Toolbar toolbar;
@@ -78,6 +77,7 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
         {
             case R.id.Addbooking:
                 drawerLayout.closeDrawer(GravityCompat.START);
+
                 startActivity(new Intent(this,addbooking.class));
                break;
             case R.id.Searchbookings

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -34,7 +35,7 @@ import com.squareup.picasso.Picasso;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class profile extends AppCompatActivity {
+public class profile extends AppCompatActivity{
      FirebaseFirestore fstore;
      String userid;
      TextView name,email;

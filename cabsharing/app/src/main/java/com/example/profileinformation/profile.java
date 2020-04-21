@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -57,7 +59,7 @@ public class profile extends AppCompatActivity{
         logout=findViewById(R.id.button);
         email=findViewById(R.id.textView4);
         name=findViewById(R.id.textView3);
-
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         assert acct != null;
         final Uri personPhoto=acct.getPhotoUrl();
@@ -93,7 +95,15 @@ public class profile extends AppCompatActivity{
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-    }  private void signOut() {
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        startActivity(new Intent(this,firstactivity.class));
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void signOut() {
 
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {

@@ -18,6 +18,11 @@
         android:title="@string/search_bookings">
 
     </item>
+    <item
+        android:id="@+id/update"
+        android:title="Update Bookings">
+
+    </item>
 </group>
 
 </menu>

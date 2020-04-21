@@ -11,11 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Searchbookings"></activity>
+        <activity android:name=".Updatebookings"></activity>
+        <activity android:name=".Searchbookings" />
         <activity android:name=".addbooking" />
         <activity android:name=".profile" />
-        <activity android:name=".firstactivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".firstactivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".googlesignin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -24,15 +24,24 @@ class ProductViewHolder extends RecyclerView.ViewHolder {
 
 
     }
-
     void setCARNAME(String CARNAME) {
         TextView textView = view.findViewById(R.id.textView7);
         textView.setText(CARNAME);
+    }
+
+    void setCARCAPACITY(String CAPACITY) {
+        TextView textView = view.findViewById(R.id.textView13);
+        textView.setText(CAPACITY);
     }
     void setDRIVERNAME(String DRIVERNAME)
     {
         TextView textView = view.findViewById(R.id.textView8);
         textView.setText(DRIVERNAME);
+    }
+    void setGENDER(String GENDER)
+    {
+        TextView textView = view.findViewById(R.id.textView14);
+        textView.setText(GENDER);
     }
     void setADDITIONALLUGGAGE(String ADDITIONALLUGGAGE)
     {
@@ -41,8 +50,13 @@ class ProductViewHolder extends RecyclerView.ViewHolder {
     }
     void setDATE(String DATE)
     {
-        TextView textView=view.findViewById(R.id.textView10);
+        TextView textView=view.findViewById(R.id.textView15);
         textView.setText(DATE);
+    }
+    void setCARNUMBER(String CARNUMBER)
+    {
+        TextView textView=view.findViewById(R.id.textView10);
+        textView.setText(CARNUMBER);
     }
     void setTIME(String TIME)
     {

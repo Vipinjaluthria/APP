@@ -3,6 +3,7 @@ package com.example.profileinformation;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -13,6 +14,8 @@ import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
@@ -34,17 +37,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.Year;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class addbooking extends AppCompatActivity {
-   EditText name,contact,carname,drivername,additionalluggage,D,T;
-   TextView Time,Date;
+public class addbooking extends AppCompatActivity{
+    EditText name,contact,carname,drivername,additionalluggage,D,T,carcapcity,carnumber;
+    TextView Time,Date;
+     AutoCompleteTextView Gender;
 
-   FirebaseAuth mfirebase;
    FirebaseFirestore fstore;
-   Button confirm,datebtn,timebtn;
-   String userid;
-   GoogleSignInClient mGoogleSignInClient;
+     Button datebtn;
+    Button timebtn;
+    String userid;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -54,21 +58,31 @@ public class addbooking extends AppCompatActivity {
         name = findViewById(R.id.name);
         timebtn = findViewById(R.id.button4);
         Date = findViewById(R.id.date);
+        Gender=findViewById(R.id.gender);
         T=findViewById(R.id.T);
         D=findViewById(R.id.D);
         T.setVisibility(View.GONE);
         D.setVisibility(View.GONE);
+        carcapcity=findViewById(R.id.carcapacity);
 
         Time = findViewById(R.id.time);
         contact = findViewById(R.id.contact);
+        carnumber=findViewById(R.id.carnumber);
         Time.setVisibility(View.GONE);
         datebtn = findViewById(R.id.button2);
-        mfirebase = FirebaseAuth.getInstance();
+        FirebaseAuth mfirebase = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
         carname = findViewById(R.id.carname);
         drivername = findViewById(R.id.driver);
         additionalluggage = findViewById(R.id.additionalluggage);
         Date.setVisibility(View.GONE);
+         final String[] gender ={"MALE","FEMALE"};
+
+        ArrayAdapter<String> adapter= new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice, gender);
+        Gender.setThreshold(1);
+        Gender.setAdapter(adapter);
+
+
 
         datebtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +100,7 @@ public class addbooking extends AppCompatActivity {
         });
 
 
-        confirm = findViewById(R.id.button3);
+        Button confirm = findViewById(R.id.button3);
 
         userid = mfirebase.getCurrentUser().getUid();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -99,7 +113,7 @@ public class addbooking extends AppCompatActivity {
 // Build a GoogleSignInClient with the options specified by g
 
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         assert acct != null;
 
@@ -109,9 +123,13 @@ public class addbooking extends AppCompatActivity {
                 final String DRIVERNAME = drivername.getText().toString();
 
                 String ADDITIONAL_LUGGAGE = additionalluggage.getText().toString();
+
                 final String NAME = name.getText().toString();
+                final String CARCAPACITY = carcapcity.getText().toString();
                 final String TIME = T.getText().toString();
                 final String DATE = D.getText().toString();
+                final String CARNUMBER=carnumber.getText().toString();
+                String GENDER =Gender.getText().toString();
 
 
 
@@ -119,6 +137,9 @@ public class addbooking extends AppCompatActivity {
                 final String CARNAME = carname.getText().toString();
                 if (CONTACT.isEmpty()) {
                     contact.setError("required");
+                }
+                if (CARNUMBER.isEmpty()) {
+                    carnumber.setError("required");
                 }
                 if (NAME.isEmpty()) {
                     name.setError("required");
@@ -130,7 +151,7 @@ public class addbooking extends AppCompatActivity {
                     drivername.setError("required");
                 }
                 if (ADDITIONAL_LUGGAGE.isEmpty()) {
-                    ADDITIONAL_LUGGAGE = "NULL";
+                    additionalluggage.setError("required");
                 }
 
                 if (TIME.isEmpty()) {
@@ -143,16 +164,31 @@ public class addbooking extends AppCompatActivity {
                     Date.setVisibility(View.GONE);
                     datebtn.setVisibility(View.VISIBLE);
                 }
-                if (!NAME.isEmpty() && !CONTACT.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty() && !DATE.isEmpty() && Date.length() == 9 && !TIME.isEmpty() && Time.length() <= 5 && Time.length() >= 4) {
+                if (CARCAPACITY.isEmpty()) {
+                    carcapcity.setError("required");
+
+                }
+                if (GENDER.isEmpty()) {
+                    Gender.setError("required");
+
+                }
+                else
+                {
+                    GENDER=GENDER.toUpperCase();
+                }
+                if ((GENDER.equals("MALE") || GENDER.equals("FEMALE"))&& !CARNUMBER.isEmpty() && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty()  && !NAME.isEmpty() && !CONTACT.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty() && !DATE.isEmpty() && Date.length() == 9 && !TIME.isEmpty() && Time.length() <= 5 && Time.length() >= 4) {
                     Map<String, Object> user = new HashMap<>();
                     DocumentReference myref = fstore.collection("Bookings").document(userid);
                     user.put("DRIVERNAME", DRIVERNAME);
                     user.put("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE);
                     user.put("NAME", NAME);
+                    user.put("CARCAPACITY", CARCAPACITY);
                     user.put("CONTACT", CONTACT);
                     user.put("TIME", TIME);
                     user.put("DATE", DATE);
+                    user.put("GENDER",GENDER);
                     user.put("CARNAME", CARNAME);
+                    user.put("CARNUMBER", CARNUMBER);
                     myref.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

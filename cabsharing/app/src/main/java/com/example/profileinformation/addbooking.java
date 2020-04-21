@@ -179,16 +179,16 @@ public class addbooking extends AppCompatActivity{
                 if ((GENDER.equals("MALE") || GENDER.equals("FEMALE"))&& !CARNUMBER.isEmpty() && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty()  && !NAME.isEmpty() && !CONTACT.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty() && !DATE.isEmpty() && Date.length() == 9 && !TIME.isEmpty() && Time.length() <= 5 && Time.length() >= 4) {
                     Map<String, Object> user = new HashMap<>();
                     DocumentReference myref = fstore.collection("Bookings").document(userid);
-                    user.put("DRIVERNAME", DRIVERNAME);
-                    user.put("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE);
-                    user.put("NAME", NAME);
-                    user.put("CARCAPACITY", CARCAPACITY);
-                    user.put("CONTACT", CONTACT);
-                    user.put("TIME", TIME);
-                    user.put("DATE", DATE);
-                    user.put("GENDER",GENDER);
-                    user.put("CARNAME", CARNAME);
-                    user.put("CARNUMBER", CARNUMBER);
+                    user.put("DRIVERNAME", DRIVERNAME.toUpperCase());
+                    user.put("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE.toUpperCase());
+                    user.put("NAME", NAME.toUpperCase());
+                    user.put("CARCAPACITY", CARCAPACITY.toUpperCase());
+                    user.put("CONTACT", CONTACT.toUpperCase());
+                    user.put("TIME", TIME.toUpperCase());
+                    user.put("DATE", DATE.toUpperCase());
+                    user.put("GENDER",GENDER.toUpperCase());
+                    user.put("CARNAME", CARNAME.toUpperCase());
+                    user.put("CARNUMBER", CARNUMBER.toUpperCase());
                     myref.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

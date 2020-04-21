@@ -1,12 +1,11 @@
 package com.example.profileinformation;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,21 +14,31 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Searchbookings extends AppCompatActivity {
 
-    private FirestoreRecyclerAdapter<Modelclass, ProductViewHolder> adapter;
     RecyclerView recyclerView;
+    String userid;
     FirebaseFirestore fstore;
     FirebaseAuth firebaseAuth;
+
+    public ProgressDialog dialog;
+    List<Modelclass> c;
+    Adapter adapter;
 
 
     @Override
@@ -37,57 +46,44 @@ public class Searchbookings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchbookings);
         recyclerView = findViewById(R.id.recycle);
+        firebaseAuth = FirebaseAuth.getInstance();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         fstore = FirebaseFirestore.getInstance();
+
+        userid = firebaseAuth.getCurrentUser().getUid();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        Query query = fstore.collection("Bookings");
-        FirestoreRecyclerOptions<Modelclass> options = new FirestoreRecyclerOptions.Builder<Modelclass>().setQuery(query, Modelclass.class).build();
-        adapter = new FirestoreRecyclerAdapter<Modelclass, ProductViewHolder>(options) {
+         dialog = new ProgressDialog(Searchbookings.this);
+        dialog.setMessage("Loading.....");
+        dialog.show();
+        fstore.collection("Bookings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Modelclass model) {
-                holder.setCARNAME("CARNAME - " + model.getCARNAME());
-                holder.setCONTACT("CONTACT - " + model.getCONTACT());
-                holder.setDRIVERNAME("DRIVER NAME - " + model.getDRIVERNAME());
-                holder.setNAME("NAME - " + model.getNAME());
-                holder.setADDITIONALLUGGAGE("ADDITIONAL LUGGAGE - " + model.getADDITIONALLUGGAGE());
-                holder.setDATE("DATE - " + model.getDATE());
-                holder.setCARCAPACITY("CAPACITY - " + model.getCARCAPACITY());
-                holder.setGENDER("GENDER - " + model.getGENDER());
-                holder.setTIME("TIME - " + model.getTIME());
-                holder.setCARNUMBER("CAR NUMBER - " + model.getCARNUMBER());
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                c = new ArrayList<>();
+                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                    dialog.dismiss();
+
+                    Modelclass modelclass = new Modelclass("CARNUMBER - " + documentSnapshot.getString("CARNUMBER"), "GENDER - " + documentSnapshot.
+                            getString("GENDER"), "NAME - " + documentSnapshot.
+                            getString("NAME"), "CONTACT - " + documentSnapshot.
+                            getString("CONTACT"), " DRIVERNAME - " + documentSnapshot.
+                            getString("DRIVERNAME"), "ADDITIONAL LUGGAGE - " + documentSnapshot.
+                            getString("ADDITIONAL LUGGAGE"), "CAB NAME - " + documentSnapshot.
+                            getString("CABNAME"), "DATE - " + documentSnapshot.
+                            getString("DATE"), "TIME - " + documentSnapshot.
+                            getString("TIME"), "CAR CAPACITY - " + documentSnapshot.
+                            getString("CARCAPACITY - "));
+
+                    c.add(modelclass);
+                }
+                adapter = new Adapter(c);
+                adapter.notifyDataSetChanged();
+
+                recyclerView.setAdapter(adapter);
 
             }
-
-
-            @NonNull
-            @Override
-            public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitems, parent, false);
-                return new ProductViewHolder(view);
-            }
-        };
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-
+        });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (adapter != null) {
-            adapter.stopListening();
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -104,21 +100,42 @@ public class Searchbookings extends AppCompatActivity {
          searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
              @Override
              public boolean onQueryTextSubmit(String query) {
-                 fstore.collection("Bookings").whereEqualTo("DATE",query).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+                 fstore.collection("Bookings").whereEqualTo("NAME",query.toUpperCase()).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                      @Override
                      public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                         if(task.isSuccessful())
-                         {
-                         }
-                         else
-                         {
+                         if (task.isSuccessful()) {
+                             dialog.setTitle("Searching....");
+                             dialog.show();
 
+                             c.clear();
+                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                 dialog.dismiss();
+                                 Modelclass modelclass = new Modelclass("CARNUMBER - " + documentSnapshot.getString("CARNUMBER"), "GENDER - " + documentSnapshot.
+                                         getString("GENDER"), "NAME - " + documentSnapshot.
+                                         getString("NAME"), "CONTACT - " + documentSnapshot.
+                                         getString("CONTACT"), " DRIVERNAME - " + documentSnapshot.
+                                         getString("DRIVERNAME"), "ADDITIONAL LUGGAGE - " + documentSnapshot.
+                                         getString("ADDITIONAL LUGGAGE"), "CAB NAME - " + documentSnapshot.
+                                         getString("CABNAME"), "DATE - " + documentSnapshot.
+                                         getString("DATE"), "TIME - " + documentSnapshot.
+                                         getString("TIME"), "CAR CAPACITY - " + documentSnapshot.
+                                         getString("CARCAPACITY - "));
+
+                                 c.add(modelclass);
+                             }
+                             adapter = new Adapter(c);
+
+                             recyclerView.setAdapter(adapter);
+
+                         }
+                         else {
+                             dialog.dismiss();
+                             Toast.makeText(Searchbookings.this, "Sorry Friend", Toast.LENGTH_SHORT).show();
                          }
 
                      }
+
                  });
-
-
                  return false;
              }
 

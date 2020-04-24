@@ -1,231 +1,209 @@
 package com.example.profileinformation;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Calendar;
 
 public class Updatebookings extends AppCompatActivity {
-    Button cappcity, luggage, carnumber, button8,driverbtn;
+    EditText name,contact,additionalluggage,drivername,carnumber,carname,carcapcity,D,T;
     FirebaseFirestore fstore;
-    FirebaseAuth mfirebase;
-    EditText ecapacity, eluggage, ecarnumber,edrivername;
     String userid;
+    FirebaseAuth firebaseAuth;
+    ProgressDialog progressDialog;
+    TextView date ,time;
+    Button updatebtn;
+    AutoCompleteTextView Gender;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updatebookings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        cappcity = findViewById(R.id.capacity);
-        luggage = findViewById(R.id.luggage);
-        carnumber = findViewById(R.id.number);
-        driverbtn=findViewById(R.id.button9);
-        ecapacity = findViewById(R.id.CAPACITY);
-        ecarnumber = findViewById(R.id.NUMBER);
-        eluggage = findViewById(R.id.edit);
-        button8 = findViewById(R.id.button8);
-        edrivername=findViewById(R.id.drivername);
-        mfirebase = FirebaseAuth.getInstance();
-        fstore = FirebaseFirestore.getInstance();
-        eluggage.setVisibility(View.GONE);
-        button8.setVisibility(View.GONE);
-        edrivername.setVisibility(View.GONE);
-        ecarnumber.setVisibility(View.GONE);
+        name=findViewById(R.id.name);
+        contact=findViewById(R.id.contact);
+        additionalluggage=findViewById(R.id.additionalluggage);
+        drivername=findViewById(R.id.driver);
+        carnumber=findViewById(R.id.carnumber);
+        date=findViewById(R.id.date);
+        D=findViewById(R.id.D);
+        T=findViewById(R.id.T);
+        time=findViewById(R.id.time);
+        carname=findViewById(R.id.carname);
+        Gender=findViewById(R.id.gender);
+        updatebtn=findViewById(R.id.button3);
+        final String[] gender ={"MALE","FEMALE"};
 
-        ecapacity.setVisibility(View.GONE);
-        userid = mfirebase.getCurrentUser().getUid();
-        cappcity.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<String> adapter= new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice, gender);
+        Gender.setThreshold(1);
+        Gender.setAdapter(adapter);
+
+
+        progressDialog =new ProgressDialog(Updatebookings.this);
+        fstore=FirebaseFirestore.getInstance();
+        firebaseAuth=FirebaseAuth.getInstance();
+        carcapcity=findViewById(R.id.carcapacity);
+        progressDialog.setTitle("Loading...");
+        progressDialog.show();
+        userid=firebaseAuth.getCurrentUser().getUid();
+        D.setVisibility(View.GONE);
+        T.setVisibility(View.GONE);
+        fstore.collection("Bookings").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onClick(View v) {
-                cappcity.setVisibility(View.GONE);
-                luggage.setVisibility(View.GONE);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                if(documentSnapshot.exists()) {
 
-                carnumber.setVisibility(View.GONE);
-                button8.setVisibility(View.VISIBLE);
-                driverbtn.setVisibility(View.GONE);
-                ecapacity.setVisibility(View.VISIBLE);
-                button8.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Map<String, Object> user = new HashMap<>();
-                        final String CARCAPCITY = ecapacity.getText().toString();
-                        if (CARCAPCITY.isEmpty()) {
-                            ecapacity.setError("required");
-                        } else {
-                            fstore.collection("Bookings").document(userid).update("CARCAPACITY", CARCAPCITY).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(Updatebookings.this, "DONE", Toast.LENGTH_SHORT).show();
-                                        cappcity.setVisibility(View.VISIBLE);
-                                        luggage.setVisibility(View.VISIBLE);
-                                        carnumber.setVisibility(View.VISIBLE);
-                                        driverbtn.setVisibility(View.VISIBLE);
-                                        ecapacity.setVisibility(View.GONE);
-
-                                    }
-                                    else
-                                    {
-                                        Toast.makeText(Updatebookings.this, "NO BOOKING FOUND", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-
-                        }
+                    name.setText(documentSnapshot.getString("NAME"));
+                    contact.setText(documentSnapshot.getString("CONTACT"));
+                    carcapcity.setText(documentSnapshot.getString("CARCAPACITY"));
+                    additionalluggage.setText(documentSnapshot.getString("ADDITIONALLUGGAGE"));
+                    carnumber.setText(documentSnapshot.getString("CARNUMBER"));
+                    Gender.setText(documentSnapshot.getString("GENDER"));
+                    drivername.setText(documentSnapshot.getString("DRIVERNAME"));
+                    carname.setText(" "+documentSnapshot.getString("CARNAME"));
+                    time.setText(" "+documentSnapshot.getString("TIME"));
+                    T.setText(documentSnapshot.getString("TIME"));
+                    D.setText(documentSnapshot.getString("DATE"));
+                    date.setText(documentSnapshot.getString("DATE"));
+                 }
+                else
+                {
+                    startActivity(new Intent());
+                }
 
 
-                    }
-                });
-            }
-
-        });
-        driverbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cappcity.setVisibility(View.GONE);
-                luggage.setVisibility(View.GONE);
-                carnumber.setVisibility(View.GONE);
-                button8.setVisibility(View.VISIBLE);
-                edrivername.setVisibility(View.VISIBLE);
-                driverbtn.setVisibility(View.GONE);
-                button8.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        final String DRIVERNAME = edrivername.getText().toString();
-                        if (DRIVERNAME.isEmpty()) {
-                            edrivername.setError("required");
-                        } else {
-                            fstore.collection("Bookings").document(userid).update("DRIVERNAME", DRIVERNAME).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(Updatebookings.this, "DONE", Toast.LENGTH_SHORT).show();
-                                        cappcity.setVisibility(View.VISIBLE);
-                                        luggage.setVisibility(View.VISIBLE);
-                                        carnumber.setVisibility(View.VISIBLE);
-                                        edrivername.setVisibility(View.GONE);
-                                        driverbtn.setVisibility(View.VISIBLE);
-
-                                    }
-                                    else
-                                    {
-                                        Toast.makeText(Updatebookings.this, "NO BOOKING FOUND", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-
-                        }
 
 
-                    }
-                });
-            }
-
-        });
-
-        luggage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cappcity.setVisibility(View.GONE);
-                luggage.setVisibility(View.GONE);
-                driverbtn.setVisibility(View.GONE);
-                button8.setVisibility(View.VISIBLE);
-                carnumber.setVisibility(View.GONE);
-                eluggage.setVisibility(View.VISIBLE);
-                button8.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        final String LUGGAGE = eluggage.getText().toString();
-                        if(LUGGAGE.isEmpty())
-                        {
-                            eluggage.setError("required");
-                        }
-                            else {
-                            fstore.collection("Bookings").document(userid).update("ADDITIONALLUGGAGE", LUGGAGE).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(Updatebookings.this, "DONE", Toast.LENGTH_SHORT).show();
-                                        cappcity.setVisibility(View.VISIBLE);
-                                        luggage.setVisibility(View.VISIBLE);
-                                        carnumber.setVisibility(View.VISIBLE);
-                                        eluggage.setVisibility(View.GONE);
-                                        driverbtn.setVisibility(View.VISIBLE);
-                                    }
-                                    else
-                                    {
-                                        Toast.makeText(Updatebookings.this, "NO BOOKING FOUND", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-
-                        }
-                    }
-                });
+                progressDialog.dismiss();
             }
         });
-        carnumber.setOnClickListener(new View.OnClickListener() {
+        date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cappcity.setVisibility(View.GONE);
-                luggage.setVisibility(View.GONE);
-                driverbtn.setVisibility(View.GONE);
-                carnumber.setVisibility(View.GONE);
-                button8.setVisibility(View.VISIBLE);
-                ecarnumber.setVisibility(View.VISIBLE);
-                button8.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Map<String, Object> user = new HashMap<>();
-                        final String CARNUMBER = ecarnumber.getText().toString();
-                        if(CARNUMBER.isEmpty())
-                        {
-                            carnumber.setError("required");
-                        }
-                        else {
-
-                            fstore.collection("Bookings").document(userid).update("CARNUMBER", CARNUMBER).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(Updatebookings.this, "DONE", Toast.LENGTH_SHORT).show();
-                                        cappcity.setVisibility(View.VISIBLE);
-                                        luggage.setVisibility(View.VISIBLE);
-                                        carnumber.setVisibility(View.VISIBLE);
-                                        driverbtn.setVisibility(View.VISIBLE);
-                                        ecarnumber.setVisibility(View.GONE);
-                                    }
-                                    else
-                                    {
-                                        Toast.makeText(Updatebookings.this, "NO BOOKING FOUND", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        }
-
-
-                    }
-                });
+                Date();
             }
         });
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                time();
+            }
+        });
+        updatebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String DRIVERNAME = drivername.getText().toString();
+
+                String ADDITIONAL_LUGGAGE = additionalluggage.getText().toString();
+
+                final String NAME = name.getText().toString();
+                final String CARCAPACITY = carcapcity.getText().toString();
+                final String TIME = T.getText().toString();
+                final String DATE = D.getText().toString();
+                final String CARNUMBER=carnumber.getText().toString();
+                String GENDER =Gender.getText().toString();
+
+
+
+                final String CONTACT = contact.getText().toString();
+                final String CARNAME = carname.getText().toString();
+                if ((GENDER.equals("MALE") || GENDER.equals("FEMALE"))&& !CARNUMBER.isEmpty() && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty()  && !NAME.isEmpty() && !CONTACT.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty())
+                {
+                    fstore.collection("Bookings").document(userid).update("NAME", NAME);
+                    fstore.collection("Bookings").document(userid).update("CONTACT", CONTACT);
+                    fstore.collection("Bookings").document(userid).update("CARNUMBER", CARNUMBER);
+                    fstore.collection("Bookings").document(userid).update("CARNAME", CARNAME);
+                    fstore.collection("Bookings").document(userid).update("TIME", TIME);
+                    fstore.collection("Bookings").document(userid).update("DATE", DATE);
+                    fstore.collection("Bookings").document(userid).update("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE);
+                    fstore.collection("Bookings").document(userid).update("CARCAPACITY", CARCAPACITY);
+                    fstore.collection("Bookings").document(userid).update("GENDER", GENDER);
+                    fstore.collection("Bookings").document(userid).update("DRIVERNAME", DRIVERNAME);
+                    progressDialog.setTitle("Updating");
+                    progressDialog.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            progressDialog.dismiss();
+                        }
+                    }, 3000);
+                    Toast.makeText(Updatebookings.this, "Done Updating", Toast.LENGTH_SHORT).show();
+
+                    startActivity(new Intent(getApplicationContext(),firstactivity.class));
+
+                }
+                else
+                {
+                    Toast.makeText(Updatebookings.this, "fill the given detials", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+     }
+
+    private void Date() {
+        Calendar calendar = Calendar.getInstance();
+        int Month = calendar.get(Calendar.MONTH);
+        int Year=calendar.get(Calendar.YEAR);
+        int Day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog =new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String Date=dayOfMonth+"/"+month+"/"+year;
+                date.setText(Date);
+                D.setText(Date);
+
+            }
+        },Year,Month,Day);
+             datePickerDialog.show();
+             datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+    }
+    private void time() {
+        Calendar calendar=Calendar.getInstance();
+        int hour=calendar.get(Calendar.HOUR);
+        int minute=calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog=new TimePickerDialog(this,new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String TIME=hourOfDay+":"+minute;
+                T.setText(TIME);
+                time.setText(TIME);
+
+            }
+        },hour,minute, DateFormat.is24HourFormat(getApplicationContext() ) );
+        timePickerDialog.show();
+
+
     }
 
     @Override

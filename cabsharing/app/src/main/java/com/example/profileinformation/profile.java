@@ -99,7 +99,9 @@ public class profile extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        startActivity(new Intent(this,firstactivity.class));
+        Intent intent =new Intent(this,firstactivity.class);
+
+        startActivity(intent);
         return super.onOptionsItemSelected(item);
     }
 

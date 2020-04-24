@@ -128,6 +128,11 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
                 drawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this,Updatebookings.class));
                 break;
+            case R.id.delete :
+                drawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(this,Delete.class));
+                break;
+
 
         }
         return false;

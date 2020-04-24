@@ -26,17 +26,17 @@ public class Modelclass {
     {
 
     }
-    public Modelclass(String carnumber,String gendre,String name, String contact, String drivername, String additinllaguage, String cabname,String date,String time,String carcapacity) {
-        NAME = name;
-        CONTACT = contact;
-        DRIVERNAME = drivername;
-        GENDER=gendre;
-        ADDITIONALLUGGAGE = additinllaguage;
-        DATE=date;
-        TIME=time;
-        CARCAPACITY = carcapacity;
-        CARNAME = cabname;
-        CARNUMBER=carnumber;
+    public Modelclass(String carnumber,String gendre,String name, String contact, String drivername, String additionalluggage, String carname,String date,String time,String carcapacity) {
+       this. NAME = name;
+        this.CONTACT = contact;
+       this. DRIVERNAME = drivername;
+      this.  GENDER=gendre;
+      this.  ADDITIONALLUGGAGE = additionalluggage;
+       this. DATE=date;
+      this.  TIME=time;
+       this. CARCAPACITY = carcapacity;
+       this. CARNAME = carname;
+       this. CARNUMBER=carnumber;
     }
     public String getCARCAPACITY() {
         return CARCAPACITY;

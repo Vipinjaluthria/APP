@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ public class Updatebookings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updatebookings);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         cappcity = findViewById(R.id.capacity);
         luggage = findViewById(R.id.luggage);
         carnumber = findViewById(R.id.number);
@@ -53,6 +55,7 @@ public class Updatebookings extends AppCompatActivity {
             public void onClick(View v) {
                 cappcity.setVisibility(View.GONE);
                 luggage.setVisibility(View.GONE);
+
                 carnumber.setVisibility(View.GONE);
                 button8.setVisibility(View.VISIBLE);
                 driverbtn.setVisibility(View.GONE);
@@ -223,5 +226,11 @@ public class Updatebookings extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        startActivity(new Intent(getApplicationContext(),firstactivity.class));
+        return super.onOptionsItemSelected(item);
     }
 }

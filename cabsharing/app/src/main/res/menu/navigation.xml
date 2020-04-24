@@ -23,6 +23,14 @@
         android:title="Update Bookings">
 
     </item>
+    <item
+        android:id="@+id/delete"
+        android:title="Delete">
+
+    </item>
+    <item
+        android:id="@+id/aboutus"
+        android:title="About Us"></item>
 </group>
 
 </menu>

@@ -1,11 +1,11 @@
 package com.example.profileinformation;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,16 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +51,7 @@ public class Searchbookings extends AppCompatActivity {
          dialog = new ProgressDialog(Searchbookings.this);
         dialog.setMessage("Loading.....");
         dialog.show();
-        fstore.collection("Bookings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        fstore.collection("Bookings").orderBy("TIMESTAMP", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 c = new ArrayList<>();
@@ -67,11 +63,11 @@ public class Searchbookings extends AppCompatActivity {
                             getString("NAME"), "CONTACT - " + documentSnapshot.
                             getString("CONTACT"), " DRIVERNAME - " + documentSnapshot.
                             getString("DRIVERNAME"), "ADDITIONAL LUGGAGE - " + documentSnapshot.
-                            getString("ADDITIONAL LUGGAGE"), "CAB NAME - " + documentSnapshot.
-                            getString("CABNAME"), "DATE - " + documentSnapshot.
+                            getString("ADDITIONALLUGGAGE"), "CAB NAME - " + documentSnapshot.
+                            getString("CARNAME"), "DATE - " + documentSnapshot.
                             getString("DATE"), "TIME - " + documentSnapshot.
                             getString("TIME"), "CAR CAPACITY - " + documentSnapshot.
-                            getString("CARCAPACITY - "));
+                            getString("CARCAPACITY"));
 
                     c.add(modelclass);
                 }
@@ -87,6 +83,14 @@ public class Searchbookings extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.search_bar)
+        {
+            return false;
+        }
+        else
+        {
+            startActivity(new Intent(this,firstactivity.class));
+        }
 
      return super.onOptionsItemSelected(item);
     }
@@ -100,7 +104,7 @@ public class Searchbookings extends AppCompatActivity {
          searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
              @Override
              public boolean onQueryTextSubmit(String query) {
-                 fstore.collection("Bookings").whereEqualTo("NAME",query.toUpperCase()).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+                 fstore.collection("Bookings").whereGreaterThanOrEqualTo("DATE",query.toUpperCase()).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                      @Override
                      public void onComplete(@NonNull Task<QuerySnapshot> task) {
                          if (task.isSuccessful()) {
@@ -115,11 +119,11 @@ public class Searchbookings extends AppCompatActivity {
                                          getString("NAME"), "CONTACT - " + documentSnapshot.
                                          getString("CONTACT"), " DRIVERNAME - " + documentSnapshot.
                                          getString("DRIVERNAME"), "ADDITIONAL LUGGAGE - " + documentSnapshot.
-                                         getString("ADDITIONAL LUGGAGE"), "CAB NAME - " + documentSnapshot.
-                                         getString("CABNAME"), "DATE - " + documentSnapshot.
+                                         getString("ADDITIONALLUGGAGE"), "CAB NAME - " + documentSnapshot.
+                                         getString("CARNAME"), "DATE - " + documentSnapshot.
                                          getString("DATE"), "TIME - " + documentSnapshot.
                                          getString("TIME"), "CAR CAPACITY - " + documentSnapshot.
-                                         getString("CARCAPACITY - "));
+                                         getString("CARCAPACITY"));
 
                                  c.add(modelclass);
                              }
@@ -129,8 +133,8 @@ public class Searchbookings extends AppCompatActivity {
 
                          }
                          else {
-                             dialog.dismiss();
-                             Toast.makeText(Searchbookings.this, "Sorry Friend", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        ;
                          }
 
                      }
@@ -141,6 +145,7 @@ public class Searchbookings extends AppCompatActivity {
 
              @Override
              public boolean onQueryTextChange(String newText) {
+
                  return false;
              }
          });

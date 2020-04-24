@@ -32,10 +32,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Field;
 import java.time.Year;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,6 +192,7 @@ public class addbooking extends AppCompatActivity{
                     user.put("GENDER",GENDER.toUpperCase());
                     user.put("CARNAME", CARNAME.toUpperCase());
                     user.put("CARNUMBER", CARNUMBER.toUpperCase());
+                    user.put("TIMESTAMP", FieldValue.serverTimestamp());
                     myref.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -225,8 +229,10 @@ public class addbooking extends AppCompatActivity{
                timebtn.setVisibility(View.GONE);
                 Time.setVisibility(View.VISIBLE);
             }
-        },hour,minute,DateFormat.is24HourFormat(getApplicationContext()) );
+        },hour,minute,DateFormat.is24HourFormat(getApplicationContext() ) );
         timePickerDialog.show();
+
+
     }
 
     private void Call() {
@@ -237,10 +243,12 @@ public class addbooking extends AppCompatActivity{
         int day=calendar.get(Calendar.DATE);
 
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String DATE = year + "/" + month + "/" + dayOfMonth;
+                int MONTH=month+1;
+
+                String DATE = dayOfMonth + "/" +MONTH + "/" + year;
                 Date.setText(DATE);
                 D.setText(DATE);
                 datebtn.setVisibility(View.GONE);
@@ -249,5 +257,7 @@ public class addbooking extends AppCompatActivity{
         }, year, month, day
         );
         datePickerDialog.show();
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+
     }
 }

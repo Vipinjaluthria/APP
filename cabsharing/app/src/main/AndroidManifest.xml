@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Updatebookings"></activity>
+        <activity android:name=".Delete"></activity>
+        <activity android:name=".Updatebookings" />
         <activity android:name=".Searchbookings" />
         <activity android:name=".addbooking" />
         <activity android:name=".profile" />

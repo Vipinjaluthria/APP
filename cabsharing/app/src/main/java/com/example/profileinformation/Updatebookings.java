@@ -95,7 +95,9 @@ public class Updatebookings extends AppCompatActivity {
                  }
                 else
                 {
-                    startActivity(new Intent());
+                    Toast.makeText(Updatebookings.this, "Please add Booking", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(getApplicationContext(),firstactivity.class));
+
                 }
 
 

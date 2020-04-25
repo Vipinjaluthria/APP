@@ -97,7 +97,6 @@
             android:textColor="#000000"
             android:textStyle="bold|italic" />
         <TextView
-            android:id="@+id/textView12"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="DESTINATION - Airport"

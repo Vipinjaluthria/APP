@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -50,6 +51,7 @@ public class addbooking extends AppCompatActivity{
 
    FirebaseFirestore fstore;
      Button datebtn;
+     Toolbar toolbar;
     Button timebtn;
     String userid;
 
@@ -67,6 +69,9 @@ public class addbooking extends AppCompatActivity{
         T.setVisibility(View.GONE);
         D.setVisibility(View.GONE);
         carcapcity=findViewById(R.id.carcapacity);
+        toolbar=findViewById(R.id.addtollbar);
+       setSupportActionBar(toolbar);
+
 
         Time = findViewById(R.id.time);
         contact = findViewById(R.id.contact);
@@ -208,6 +213,7 @@ public class addbooking extends AppCompatActivity{
        }
         });
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -74,8 +74,8 @@ public class profile extends AppCompatActivity{
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 assert documentSnapshot != null;
-                NAME.setText(documentSnapshot.getString("email"));
-           EMAIL.setText(documentSnapshot.getString("name"));
+                NAME.setText(" "+documentSnapshot.getString("email"));
+           EMAIL.setText(" "+documentSnapshot.getString("name"));
 
 
             }

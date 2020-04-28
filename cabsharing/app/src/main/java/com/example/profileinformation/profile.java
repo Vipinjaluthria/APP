@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,9 +42,10 @@ public class profile extends AppCompatActivity{
      FirebaseFirestore fstore;
      String userid;
      TextView name,email;
-     TextView NAME,EMAIL;
+     TextView NAME,EMAIL,PHONE;
      ImageView  imageView;
      FirebaseAuth mfirebase;
+     TelephonyManager telephonyManager;
      Button logout;
      GoogleSignInClient mGoogleSignInClient;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -53,12 +55,14 @@ public class profile extends AppCompatActivity{
         setContentView(R.layout.activity_profile);
         fstore=FirebaseFirestore.getInstance();
         mfirebase=FirebaseAuth.getInstance();
-        NAME=findViewById(R.id.textView2);
-        EMAIL=findViewById(R.id.textView);
+        NAME=findViewById(R.id.name);
+        PHONE=findViewById(R.id.phone);
+        EMAIL=findViewById(R.id.email);
         imageView=findViewById(R.id.imageView3);
         logout=findViewById(R.id.button);
         email=findViewById(R.id.textView4);
         name=findViewById(R.id.textView3);
+
          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         assert acct != null;
@@ -74,8 +78,9 @@ public class profile extends AppCompatActivity{
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 assert documentSnapshot != null;
-                NAME.setText(" "+documentSnapshot.getString("email"));
-           EMAIL.setText(" "+documentSnapshot.getString("name"));
+                NAME.setText(" "+acct.getDisplayName());
+           EMAIL.setText(" "+acct.getEmail());
+           PHONE.setText(" "+documentSnapshot.getString("PHONE"));
 
 
             }

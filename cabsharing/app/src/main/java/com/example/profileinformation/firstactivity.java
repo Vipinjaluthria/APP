@@ -13,6 +13,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +39,7 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
     NavigationView navigationView;
     ImageView Image;
     TextView name;
-
+    Button chat;
 
 
 
@@ -47,6 +49,7 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firstactivity);
+        chat=findViewById(R.id.chat);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer);
@@ -76,6 +79,14 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
             Glide.with(this).load(photo).into(Image);
         }
 
+
+
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),ChatActivity.class));
+            }
+        });
     }
     @Override
     public void onBackPressed() {

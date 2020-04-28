@@ -1,11 +1,14 @@
 package com.example.profileinformation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.health.PackageHealthStats;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -25,10 +28,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class googlesignin extends AppCompatActivity {
     SignInButton gbtn;
@@ -37,7 +45,8 @@ public class googlesignin extends AppCompatActivity {
 
     public static int RC_SIGN_IN = 2;
     GoogleSignInClient mGoogleSignInClient;
-    String userid;
+
+   String userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +58,11 @@ public class googlesignin extends AppCompatActivity {
         fstore = FirebaseFirestore.getInstance();
 
         mfirebase = FirebaseAuth.getInstance();
-
         gbtn = findViewById(R.id.sign_in_button);
+
+
+
+
 
 
         gbtn.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +96,6 @@ public class googlesignin extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -102,37 +113,20 @@ public class googlesignin extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         Log.d("TAG", "firebaseAuthWithGoogle:" + account.getId());
-        final String personName = account.getDisplayName();
-
-        final String personEmail = account.getEmail();
-
-
-        final String personGivenName = account.getGivenName();
-
-
-
-
-
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mfirebase.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            userid=mfirebase.getCurrentUser().getUid();
+                          startActivity(new Intent(getApplicationContext(),firstactivity.class));
+                          add();
 
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("TAG", "signInWithCredential:success");
-                            FirebaseUser account = mfirebase.getCurrentUser();
-
-                            data( personName, personEmail,personGivenName);
-                            startActivity(new Intent(googlesignin.this,firstactivity.class));
-                            //updateUI(account);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
-                            // Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             Toast.makeText(googlesignin.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-                           // updateUI(null);
                         }
 
                         // ...
@@ -140,62 +134,57 @@ public class googlesignin extends AppCompatActivity {
                 });
     }
 
-    private void data(String personName, String personEmail,String personGivenName) {
-        Map<String,Object> user= new HashMap<>();
-        userid = mfirebase.getCurrentUser().getUid();
-        user.put("name",personName);
-        user.put("email",personEmail);
+    private void add() {
+        Map<String, Object> data =new HashMap<>();
+        data.put("Boolean","false");
 
-        user.put("Family name",personGivenName);
 
-        DocumentReference myref = fstore.collection("PROFILE").document(userid);
-        myref.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful())
-                {
-                    Toast.makeText(googlesignin.this, "successfull", Toast.LENGTH_SHORT).show();
-
-                }
-                else
-                {
-                    Toast.makeText(googlesignin.this, "failed ", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    private void updateUI(FirebaseUser user) {
-
-        if (user != null) {
-
-            gbtn.setVisibility(View.GONE);
-
+        DocumentReference documentReference= fstore.collection("PROFILE").document(userid);
+        documentReference.set(data,SetOptions.merge());
         }
-        else
-        {
-            gbtn.setVisibility(View.VISIBLE);
 
-        }
-    }
 
+
+  //  private void Check() {
+
+        //fstore.collection("PROFILE").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+          //  @Override
+            //public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+              //  if(task.isSuccessful())
+               // {
+                //    DocumentSnapshot documentSnapshot =task.getResult();
+                  //  assert documentSnapshot != null;
+
+                   //{  Intent intent=new Intent(getApplicationContext(),firstactivity.class);
+                    //               startActivity(intent);
+                  // }
+         //           else
+           //         {
+             //           Intent intent=new Intent(getApplicationContext(),phonenumber.class);
+               //         startActivity(intent);
+                 //   }
+               // }
+
+           // }
+       // });
+
+
+
+   // }
 
 
     @Override
     public void onStart() {
         super.onStart();
 
-// Check for existing Google Sign In account, if the user is already signed in
-// the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account!=null)
         {
-            startActivity(new Intent(googlesignin.this,firstactivity.class));
+            if(account!=null) {
+                startActivity(new Intent(getApplicationContext(),firstactivity.class));
+            }
         }
-        // Check for existing Google Sign In account, if the user is already signed in
-// the GoogleSignInAccount will be non-null.
-        // Check for existing Google Sign In account, if the user is already signed in
-// the GoogleSignInAccount will be non-null.
+
+
     }
 
 

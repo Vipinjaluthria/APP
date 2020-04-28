@@ -2,6 +2,7 @@ package com.example.profileinformation;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -12,7 +13,6 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<ProductViewHolder> {
     List<Modelclass> modelclass;
-
 
     @NonNull
     @Override

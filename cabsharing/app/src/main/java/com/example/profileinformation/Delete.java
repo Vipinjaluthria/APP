@@ -57,7 +57,6 @@ public class Delete extends AppCompatActivity {
         userid = firebaseAuth.getCurrentUser().getUid();
         final List<String> data = new ArrayList<>();
 
-        CollectionReference collectionReference = fstore.collection("Bookings");
         fstore.collection("Bookings").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

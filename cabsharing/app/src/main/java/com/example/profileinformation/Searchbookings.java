@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Searchbookings extends AppCompatActivity {
@@ -51,7 +53,12 @@ public class Searchbookings extends AppCompatActivity {
          dialog = new ProgressDialog(Searchbookings.this);
         dialog.setMessage("Loading.....");
         dialog.show();
-        fstore.collection("Bookings").orderBy("TIMESTAMP", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Calendar calendar =Calendar.getInstance();
+        int month=1+calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        int day =calendar.get(Calendar.DAY_OF_MONTH);
+        String date=day+"/"+month+"/"+year;
+        fstore.collection("Bookings").whereGreaterThanOrEqualTo("DATE",date).orderBy("DATE", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 c = new ArrayList<>();
@@ -104,6 +111,7 @@ public class Searchbookings extends AppCompatActivity {
          searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
              @Override
              public boolean onQueryTextSubmit(String query) {
+
                  fstore.collection("Bookings").whereGreaterThanOrEqualTo("DATE",query.toUpperCase()).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                      @Override
                      public void onComplete(@NonNull Task<QuerySnapshot> task) {

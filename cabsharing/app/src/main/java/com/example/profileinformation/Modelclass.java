@@ -2,7 +2,7 @@ package com.example.profileinformation;
 
 public class Modelclass {
     private String NAME;
-    private String CONTACT;
+
 
     private String DRIVERNAME;
     private String ADDITIONALLUGGAGE;
@@ -26,9 +26,9 @@ public class Modelclass {
     {
 
     }
-    public Modelclass(String carnumber,String gendre,String name, String contact, String drivername, String additionalluggage, String carname,String date,String time,String carcapacity) {
+    public Modelclass(String carnumber,String gendre,String name,  String drivername, String additionalluggage, String carname,String date,String time,String carcapacity) {
        this. NAME = name;
-        this.CONTACT = contact;
+
        this. DRIVERNAME = drivername;
       this.  GENDER=gendre;
       this.  ADDITIONALLUGGAGE = additionalluggage;
@@ -56,9 +56,7 @@ public class Modelclass {
         return CARNUMBER;
     }
 
-    public String getCONTACT() {
-        return CONTACT;
-    }
+
 
     public String getDRIVERNAME() {
         return DRIVERNAME;

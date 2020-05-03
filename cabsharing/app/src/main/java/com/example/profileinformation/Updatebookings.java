@@ -81,7 +81,7 @@ public class Updatebookings extends AppCompatActivity {
                 if(documentSnapshot.exists()) {
 
                     name.setText(documentSnapshot.getString("NAME"));
-                    contact.setText(documentSnapshot.getString("CONTACT"));
+
                     carcapcity.setText(documentSnapshot.getString("CARCAPACITY"));
                     additionalluggage.setText(documentSnapshot.getString("ADDITIONALLUGGAGE"));
                     carnumber.setText(documentSnapshot.getString("CARNUMBER"));
@@ -136,10 +136,10 @@ public class Updatebookings extends AppCompatActivity {
 
                 final String CONTACT = contact.getText().toString();
                 final String CARNAME = carname.getText().toString();
-                if ((GENDER.equals("MALE") || GENDER.equals("FEMALE"))&& !CARNUMBER.isEmpty() && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty()  && !NAME.isEmpty() && !CONTACT.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty())
+                if ((GENDER.equals("MALE") || GENDER.equals("FEMALE"))&& !CARNUMBER.isEmpty() && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty()  && !NAME.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty())
                 {
                     fstore.collection("Bookings").document(userid).update("NAME", NAME);
-                    fstore.collection("Bookings").document(userid).update("CONTACT", CONTACT);
+
                     fstore.collection("Bookings").document(userid).update("CARNUMBER", CARNUMBER);
                     fstore.collection("Bookings").document(userid).update("CARNAME", CARNAME);
                     fstore.collection("Bookings").document(userid).update("TIME", TIME);

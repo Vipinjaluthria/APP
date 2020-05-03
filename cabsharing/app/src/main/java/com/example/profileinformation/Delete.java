@@ -34,7 +34,7 @@ public class Delete extends AppCompatActivity {
     ProgressDialog progressDialog;
     TextView dbooking;
     ListView listView;
-    AlertDialog.Builder alertdialog;
+
     Button delete;
 
 
@@ -65,7 +65,6 @@ public class Delete extends AppCompatActivity {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     final String NAME = documentSnapshot.getString("NAME");
                     data.add("NAME -" + NAME);
-                    data.add("CONTACT - " + documentSnapshot.getString("CONTACT"));
                     data.add("CAB NAME - " + documentSnapshot.getString("CARNAME"));
                     data.add("GENDER - " + documentSnapshot.getString("GENDER"));
                     data.add("CAR NUMBER - " + documentSnapshot.getString("CARNUMBER"));

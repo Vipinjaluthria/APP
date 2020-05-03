@@ -1,7 +1,6 @@
 package com.example.profileinformation;
 
 import android.app.ProgressDialog;
-import android.app.usage.UsageStatsManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,14 +20,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.hbb20.CountryCodePicker;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class phonenumber extends AppCompatActivity {
     Button confirm;
@@ -36,6 +29,7 @@ public class phonenumber extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     CountryCodePicker countryCodePicker;
     FirebaseFirestore fstore;
+    GoogleSignInClient mGoogleSignInClient;
 
     ProgressDialog progressDialog;
     TextView p;
@@ -55,11 +49,20 @@ public class phonenumber extends AppCompatActivity {
         progressDialog.create();
         progressDialog.setMessage("Wait.......");
         progressDialog.show();
-        userid=firebaseAuth.getCurrentUser().getUid();
+        userid = firebaseAuth.getCurrentUser().getUid();
 
         progressDialog.dismiss();
         countryCodePicker = findViewById(R.id.country);
         countryCodePicker.registerCarrierNumberEditText(phone);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+// Build a GoogleSignInClient with the options specified by g
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +75,9 @@ public class phonenumber extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(getApplicationContext(), Verification.class);
                     intent.putExtra("phone", Phone);
-                    intent.putExtra("USERID",userid);
                     startActivity(intent);
                     finish();
+
                 }
 
 
@@ -85,9 +88,37 @@ public class phonenumber extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(),firstactivity.class));
+        signOut();
+
+
+        finish();
 
         super.onBackPressed();
+    }
+
+    private void signOut() {
+
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        startActivity(new Intent(getApplicationContext(),googlesignin.class));
+                        revokeAccess();
+                        // ...
+                    }
+                });
+    }
+
+    private void revokeAccess() {
+        mGoogleSignInClient.revokeAccess()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_SHORT).show();
+
+                        // ...
+                    }
+                });
     }
 }
 

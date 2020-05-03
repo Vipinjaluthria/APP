@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class addbooking extends AppCompatActivity{
-    EditText name,contact,carname,drivername,additionalluggage,D,T,carcapcity,carnumber;
+    EditText name,carname,drivername,additionalluggage,D,T,carcapcity,carnumber;
     TextView Time,Date;
     String PHONE;
      AutoCompleteTextView Gender;
@@ -74,7 +74,7 @@ public class addbooking extends AppCompatActivity{
 
 
         Time = findViewById(R.id.time);
-        contact = findViewById(R.id.contact);
+
         carnumber = findViewById(R.id.carnumber);
         Time.setVisibility(View.GONE);
         datebtn = findViewById(R.id.button2);
@@ -84,14 +84,14 @@ public class addbooking extends AppCompatActivity{
         drivername = findViewById(R.id.driver);
         additionalluggage = findViewById(R.id.additionalluggage);
         Date.setVisibility(View.GONE);
+        userid = mfirebase.getCurrentUser().getUid();
+        check();
         final String[] gender = {"MALE", "FEMALE"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice, gender);
         Gender.setThreshold(1);
         Gender.setAdapter(adapter);
-        userid = mfirebase.getCurrentUser().getUid();
 
-               check();
             datebtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -112,18 +112,6 @@ public class addbooking extends AppCompatActivity{
 
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build();
-// Build a GoogleSignInClient with the options specified by g
-
-            // Build a GoogleSignInClient with the options specified by gso.
-            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-
             confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -140,11 +128,9 @@ public class addbooking extends AppCompatActivity{
                     String GENDER = Gender.getText().toString();
 
 
-                    final String CONTACT = contact.getText().toString();
+
                     final String CARNAME = carname.getText().toString();
-                    if (CONTACT.isEmpty()) {
-                        contact.setError("required");
-                    }
+
                     if (CARNUMBER.isEmpty()) {
                         carnumber.setError("required");
                     }
@@ -181,14 +167,13 @@ public class addbooking extends AppCompatActivity{
                     } else {
                         GENDER = GENDER.toUpperCase();
                     }
-                    if ((GENDER.equals("MALE") || GENDER.equals("FEMALE")) && !CARNUMBER.isEmpty() && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty() && !NAME.isEmpty() && !CONTACT.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty() && !DATE.isEmpty() && Date.length() == 9 && !TIME.isEmpty() && Time.length() <= 5 && Time.length() >= 4) {
+                    if ((GENDER.equals("MALE") || GENDER.equals("FEMALE")) && !CARNUMBER.isEmpty() && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty() && !NAME.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty() && !DATE.isEmpty() && Date.length() == 9 && !TIME.isEmpty() && Time.length() <= 5 && Time.length() >= 4) {
                         Map<String, Object> user = new HashMap<>();
                         DocumentReference myref = fstore.collection("Bookings").document(userid);
                         user.put("DRIVERNAME", DRIVERNAME.toUpperCase());
                         user.put("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE.toUpperCase());
                         user.put("NAME", NAME.toUpperCase());
                         user.put("CARCAPACITY", CARCAPACITY.toUpperCase());
-                        user.put("CONTACT", CONTACT.toUpperCase());
                         user.put("TIME", TIME.toUpperCase());
                         user.put("DATE", DATE.toUpperCase());
                         user.put("GENDER", GENDER.toUpperCase());
@@ -216,10 +201,13 @@ public class addbooking extends AppCompatActivity{
         fstore.collection("PROFILE").document(userid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                    String Boolean =documentSnapshot.getString("PHONE");
-                    if(Boolean==null)
+
+                assert documentSnapshot != null;
+                if(documentSnapshot.getString("PHONE")==null)
                     {
-                        startActivity(new Intent(getApplicationContext(),phonenumber.class));
+                        Toast.makeText(addbooking.this, "verify your phone number", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getApplicationContext(),firstactivity.class));
+
                     }
             }
         });
@@ -278,4 +266,5 @@ public class addbooking extends AppCompatActivity{
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
 
     }
+
 }

@@ -67,6 +67,8 @@ public class profile extends AppCompatActivity{
         final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         assert acct != null;
         final Uri personPhoto=acct.getPhotoUrl();
+        NAME.setText(" "+acct.getDisplayName());
+        EMAIL.setText(" "+acct.getEmail());
 
         Glide.with(this).load(personPhoto).into(imageView);
 
@@ -78,8 +80,7 @@ public class profile extends AppCompatActivity{
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 assert documentSnapshot != null;
-                NAME.setText(" "+acct.getDisplayName());
-           EMAIL.setText(" "+acct.getEmail());
+
            PHONE.setText(" "+documentSnapshot.getString("PHONE"));
 
 

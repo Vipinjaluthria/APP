@@ -121,8 +121,8 @@ public class googlesignin extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             userid=mfirebase.getCurrentUser().getUid();
-                          startActivity(new Intent(getApplicationContext(),firstactivity.class));
-                          add();
+                            Check();
+
 
                         } else {
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
@@ -145,40 +145,42 @@ public class googlesignin extends AppCompatActivity {
 
 
 
-  //  private void Check() {
+  private void Check() {
 
-        //fstore.collection("PROFILE").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-          //  @Override
-            //public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-              //  if(task.isSuccessful())
-               // {
-                //    DocumentSnapshot documentSnapshot =task.getResult();
-                  //  assert documentSnapshot != null;
+        fstore.collection("PROFILE").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    DocumentSnapshot documentSnapshot =task.getResult();
+                    assert documentSnapshot != null;
+                 if(documentSnapshot.getString("PHONE")!=null)
+                   {  Intent intent=new Intent(getApplicationContext(),firstactivity.class);
+                                   startActivity(intent);
+                   }
+                    else
+                    {
+                        Intent intent=new Intent(getApplicationContext(),phonenumber.class);
+                        startActivity(intent);
+                    }
+                }
 
-                   //{  Intent intent=new Intent(getApplicationContext(),firstactivity.class);
-                    //               startActivity(intent);
-                  // }
-         //           else
-           //         {
-             //           Intent intent=new Intent(getApplicationContext(),phonenumber.class);
-               //         startActivity(intent);
-                 //   }
-               // }
-
-           // }
-       // });
+            }
+        });
 
 
 
-   // }
+    }
 
 
     @Override
     public void onStart() {
         super.onStart();
 
+
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         {
+
             if(account!=null) {
                 startActivity(new Intent(getApplicationContext(),firstactivity.class));
             }

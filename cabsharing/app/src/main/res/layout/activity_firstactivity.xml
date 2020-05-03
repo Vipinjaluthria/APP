@@ -45,16 +45,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.115" />
 
-            <Button
-                android:id="@+id/chat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/fullname"
                 android:layout_width="wrap_content"
@@ -82,7 +72,7 @@
         android:layout_gravity="start"
 
         android:background="#FFFFFF"
-        app:itemIconTint="@color/colorPrimaryDark"
+        app:itemIconTint="#000000"
         app:menu="@menu/navigation">
 
     </com.google.android.material.navigation.NavigationView>

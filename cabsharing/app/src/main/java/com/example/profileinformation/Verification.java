@@ -1,7 +1,10 @@
 package com.example.profileinformation;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +35,7 @@ public class Verification extends AppCompatActivity {
     String id, number;
     PhoneAuthProvider.ForceResendingToken mResendToken;
     FirebaseAuth firebaseAuth;
+    ProgressDialog progressDialog;
     FirebaseFirestore fstore;
     String userid;
     TextView resend;
@@ -44,10 +48,11 @@ public class Verification extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         verify = findViewById(R.id.verify);
         resend = findViewById(R.id.resend);
+        progressDialog=new ProgressDialog(Verification.this);
         fstore=FirebaseFirestore.getInstance();
         resend.setVisibility(View.GONE);
+        userid=firebaseAuth.getCurrentUser().getUid();
 
-        userid=getIntent().getStringExtra("USERID");
         number = getIntent().getStringExtra("phone");
         Start();
 
@@ -60,7 +65,7 @@ public class Verification extends AppCompatActivity {
                     Toast.makeText(Verification.this, "empty", Toast.LENGTH_SHORT).show();
 
                 } else if (Otp.length() == 6) {
-                    Toast.makeText(Verification.this, "you are here", Toast.LENGTH_SHORT).show();
+
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, OTP);
                     signInWithPhoneAuthCredential(credential);
                 }
@@ -72,7 +77,6 @@ public class Verification extends AppCompatActivity {
     }
 
     private void Start() {
-        Toast.makeText(getApplicationContext(), "working", Toast.LENGTH_SHORT).show();
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number,
@@ -108,6 +112,13 @@ public class Verification extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),phonenumber.class));
+        finish();
+        super.onBackPressed();
+    }
+
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         Toast.makeText(this, "kya app yaha par ho", Toast.LENGTH_SHORT).show();
         firebaseAuth.signInWithCredential(credential)
@@ -115,28 +126,34 @@ public class Verification extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    progressDialog.setMessage("Wait......");
+                                    progressDialog.show();
                                     Toast.makeText(Verification.this, "successfull", Toast.LENGTH_SHORT).show();
-                                    fstore.collection("PROFILE").document(userid).update("Boolean","true");
+
                                     DocumentReference documentReference=fstore.collection("PROFILE").document(userid);
                                     Map<String, Object> num = new HashMap<>();
-
-
                                     num.put("PHONE",number);
-                                    documentReference.set(num, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    documentReference.set(num).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful())
                                             {
-                                                Toast.makeText(Verification.this, "number updated", Toast.LENGTH_SHORT).show();
+                                                new CountDownTimer(5000, 1000) {
 
+                                                    public void onTick(long millisUntilFinished) {
+
+                                                    }
+
+                                                    public void onFinish() {
+                                                      progressDialog.dismiss();
+                                                      startActivity(new Intent(getApplicationContext(),firstactivity.class));
+                                                      finish();
+                                                    }
+                                                }.start();
                                             }
                                         }
                                     });
 
-                                    startActivity(new Intent(getApplicationContext(),firstactivity.class));
-                                    finish();
-
-                                    // ...
                                 } else {
                                     Toast.makeText(Verification.this, "verification failed", Toast.LENGTH_SHORT).show();
 
@@ -145,5 +162,7 @@ public class Verification extends AppCompatActivity {
                             }
                         }
                 );
+
+
     }
 }

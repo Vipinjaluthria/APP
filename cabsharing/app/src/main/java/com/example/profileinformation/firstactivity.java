@@ -1,6 +1,7 @@
 package com.example.profileinformation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Objects;
 
@@ -37,9 +43,12 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
   Toolbar toolbar;
   GoogleSignInClient mGoogleSignInClient;
     NavigationView navigationView;
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore fstore;
     ImageView Image;
+    String userid;
     TextView name;
-    Button chat;
+
 
 
 
@@ -49,13 +58,15 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firstactivity);
-        chat=findViewById(R.id.chat);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.navigation);
         name=findViewById(R.id.fullname);
         Image=findViewById(R.id.photo);
+        fstore=FirebaseFirestore.getInstance();
+        firebaseAuth=FirebaseAuth.getInstance();
+        userid=firebaseAuth.getCurrentUser().getUid();
         navigationView.setNavigationItemSelectedListener(this);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -81,12 +92,6 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
 
 
 
-        chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ChatActivity.class));
-            }
-        });
     }
     @Override
     public void onBackPressed() {

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/image21"
     tools:context=".Updatebookings">
+
     <EditText
         android:id="@+id/name"
         android:layout_width="300dp"
@@ -19,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.052" />
 
     <EditText
         android:id="@+id/carname"
@@ -35,7 +36,7 @@
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.191" />
+        app:layout_constraintVertical_bias="0.138" />
 
     <Button
         android:id="@+id/button3"
@@ -50,6 +51,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941" />
 
+
     <EditText
         android:id="@+id/driver"
         android:layout_width="300dp"
@@ -60,26 +62,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.283" />
-
-    <EditText
-        android:id="@+id/contact"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:ems="10"
-        android:hint="PHONE"
-        android:inputType="phone"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.105" />
-
+        app:layout_constraintVertical_bias="0.232" />
 
     <TextView
         android:id="@+id/time"
@@ -109,7 +95,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.367" />
+        app:layout_constraintVertical_bias="0.331" />
 
     <TextView
         android:id="@+id/date"
@@ -157,14 +143,15 @@
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="CAR CAPACITY"
+        android:inputType="textPersonName"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.54" />
+        app:layout_constraintVertical_bias="0.528" />
 
     <AutoCompleteTextView
         android:id="@+id/gender"
@@ -174,9 +161,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.451" />
+        app:layout_constraintVertical_bias="0.432" />
 
     <EditText
         android:id="@+id/carnumber"

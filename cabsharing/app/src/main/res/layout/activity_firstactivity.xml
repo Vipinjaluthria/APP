@@ -8,42 +8,61 @@
     android:layout_gravity="start"
 
     tools:context=".firstactivity"
-    tools:openDrawer="start">
+    >
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:background="@drawable/image21"
         android:orientation="vertical"
 
         >
 
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/colorPrimary"
+            android:layout_height="60dp"
+            android:background="#000000"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         </androidx.appcompat.widget.Toolbar>
 
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/fragment"
 
-            <ImageView
-                android:id="@+id/photo"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+
+            >
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="100dp"
+                android:id="@+id/profilecardview"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.573"
+                app:layout_constraintHorizontal_bias="0.523"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.115" />
+                app:layout_constraintVertical_bias="0.181">
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    tools:layout_editor_absoluteX="122dp"
+                    tools:layout_editor_absoluteY="190dp" />
+
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/fullname"
@@ -59,6 +78,9 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.456" />
 
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -70,9 +92,10 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemTextColor="#4885ed"
 
         android:background="#FFFFFF"
-        app:itemIconTint="#000000"
+        app:itemIconTint="#4885ed"
         app:menu="@menu/navigation">
 
     </com.google.android.material.navigation.NavigationView>

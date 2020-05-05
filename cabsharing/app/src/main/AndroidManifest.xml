@@ -21,7 +21,8 @@
         <activity
             android:name=".addbooking"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".profile" />
+        <activity android:name=".profile"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".firstactivity"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -45,6 +45,7 @@ public class Searchbookings extends AppCompatActivity implements recyclerviewcli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchbookings);
         recyclerView = findViewById(R.id.recycle);
+        Searchbookings.this.setTitle("Search Bookings");
         firebaseAuth = FirebaseAuth.getInstance();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         fstore = FirebaseFirestore.getInstance();

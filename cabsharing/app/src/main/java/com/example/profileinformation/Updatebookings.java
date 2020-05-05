@@ -30,7 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Calendar;
 
 public class Updatebookings extends AppCompatActivity {
-    EditText name,contact,additionalluggage,drivername,carnumber,carname,carcapcity,D,T;
+    EditText name,additionalluggage,drivername,carnumber,carname,carcapcity,D,T;
     FirebaseFirestore fstore;
     String userid;
     FirebaseAuth firebaseAuth;
@@ -45,9 +45,9 @@ public class Updatebookings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updatebookings);
+        Updatebookings.this.setTitle("Update Booking");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         name=findViewById(R.id.name);
-        contact=findViewById(R.id.contact);
         additionalluggage=findViewById(R.id.additionalluggage);
         drivername=findViewById(R.id.driver);
         carnumber=findViewById(R.id.carnumber);
@@ -131,10 +131,6 @@ public class Updatebookings extends AppCompatActivity {
                 final String DATE = D.getText().toString();
                 final String CARNUMBER=carnumber.getText().toString();
                 String GENDER =Gender.getText().toString();
-
-
-
-                final String CONTACT = contact.getText().toString();
                 final String CARNAME = carname.getText().toString();
                 if ((GENDER.equals("MALE") || GENDER.equals("FEMALE"))&& !CARNUMBER.isEmpty() && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty()  && !NAME.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty())
                 {

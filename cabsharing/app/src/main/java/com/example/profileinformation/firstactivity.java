@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -44,16 +45,12 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
   GoogleSignInClient mGoogleSignInClient;
     NavigationView navigationView;
     FirebaseAuth firebaseAuth;
+    CardView profilecardview;
     FirebaseFirestore fstore;
     ImageView Image;
     String userid;
     TextView name;
-
-
-
-
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +61,7 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
         navigationView = findViewById(R.id.navigation);
         name=findViewById(R.id.fullname);
         Image=findViewById(R.id.photo);
+        profilecardview=findViewById(R.id.profilecardview);
         fstore=FirebaseFirestore.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         userid=firebaseAuth.getCurrentUser().getUid();
@@ -98,7 +96,7 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            // to close application on back pressed button
+
             Intent a = new Intent(Intent.ACTION_MAIN);
             a.addCategory(Intent.CATEGORY_HOME);
             a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -141,12 +139,13 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
                 startActivity(new Intent(this,profile.class));
                 break;
             case R.id.update:
+
                 drawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this,Updatebookings.class));
                 break;
             case R.id.delete :
                 drawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(new Intent(this,Delete.class));
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new Fragment_Delete()).commit();
                 break;
 
 

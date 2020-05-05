@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -40,6 +42,7 @@ import java.util.Objects;
 
 public class profile extends AppCompatActivity{
      FirebaseFirestore fstore;
+     Toolbar profiletoolbar;
      String userid;
      TextView name,email;
      TextView NAME,EMAIL,PHONE;
@@ -62,8 +65,13 @@ public class profile extends AppCompatActivity{
         logout=findViewById(R.id.button);
         email=findViewById(R.id.textView4);
         name=findViewById(R.id.textView3);
+        profiletoolbar=findViewById(R.id.profiletoolbar);
+        profiletoolbar.setTitle("Profile");
+        setSupportActionBar(profiletoolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         assert acct != null;
         final Uri personPhoto=acct.getPhotoUrl();

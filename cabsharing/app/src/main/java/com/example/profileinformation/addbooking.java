@@ -29,6 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,7 +44,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class addbooking extends AppCompatActivity{
-    EditText name,carname,drivername,additionalluggage,D,T,carcapcity,carnumber;
+    EditText D,T;
+    TextInputLayout name,carname,drivername,additionalluggage,carcapcity,carnumber;
     TextView Time,Date;
     String PHONE;
      AutoCompleteTextView Gender;
@@ -70,6 +72,7 @@ public class addbooking extends AppCompatActivity{
         D.setVisibility(View.GONE);
         carcapcity = findViewById(R.id.carcapacity);
         toolbar = findViewById(R.id.addtollbar);
+        toolbar.setTitle("Add Booking");
         setSupportActionBar(toolbar);
 
 
@@ -116,23 +119,23 @@ public class addbooking extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
 
-                    final String DRIVERNAME = drivername.getText().toString();
+                    final String DRIVERNAME = drivername.getEditText().getText().toString();
 
-                    String ADDITIONAL_LUGGAGE = additionalluggage.getText().toString();
+                    String ADDITIONAL_LUGGAGE = additionalluggage.getEditText().getText().toString();
 
-                    final String NAME = name.getText().toString();
-                    final String CARCAPACITY = carcapcity.getText().toString();
+                    final String NAME = name.getEditText().getText().toString();
+                    final String CARCAPACITY = carcapcity.getEditText().getText().toString();
                     final String TIME = T.getText().toString();
                     final String DATE = D.getText().toString();
-                    final String CARNUMBER = carnumber.getText().toString();
+                    final String CARNUMBER = carnumber.getEditText().getText().toString();
                     String GENDER = Gender.getText().toString();
 
 
 
-                    final String CARNAME = carname.getText().toString();
+                    final String CARNAME = carname.getEditText().getText().toString();
 
                     if (CARNUMBER.isEmpty()) {
-                        carnumber.setError("required");
+
                     }
                     if (NAME.isEmpty()) {
                         name.setError("required");

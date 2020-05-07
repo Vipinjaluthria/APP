@@ -104,8 +104,6 @@ public class Verification extends AppCompatActivity {
 
                         id = verificationId;
                         mResendToken = token;
-
-                        // ...
                     }
                 }
         );
@@ -120,7 +118,7 @@ public class Verification extends AppCompatActivity {
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        Toast.makeText(this, "kya app yaha par ho", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "inside phone authentication", Toast.LENGTH_SHORT).show();
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -129,22 +127,25 @@ public class Verification extends AppCompatActivity {
                                     progressDialog.setMessage("Wait......");
                                     progressDialog.show();
                                     Toast.makeText(Verification.this, "successfull", Toast.LENGTH_SHORT).show();
-
-                                    DocumentReference documentReference=fstore.collection("PROFILE").document(userid);
+                                    DocumentReference document=fstore.collection("PROFILE").document(userid);
                                     Map<String, Object> num = new HashMap<>();
                                     num.put("PHONE",number);
-                                    documentReference.set(num).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    document.set(num).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful())
                                             {
-                                                new CountDownTimer(5000, 1000) {
+                                                new CountDownTimer(3000, 1000) {
 
                                                     public void onTick(long millisUntilFinished) {
 
                                                     }
 
                                                     public void onFinish() {
+                                                        DocumentReference documentReference=fstore.collection("Bookings").document(userid);
+                                                        Map<String, Object> phone = new HashMap<>();
+                                                        phone.put("PHONE",number);
+                                                        documentReference.set(phone,SetOptions.merge());
                                                       progressDialog.dismiss();
                                                       startActivity(new Intent(getApplicationContext(),firstactivity.class));
                                                       finish();
@@ -165,4 +166,5 @@ public class Verification extends AppCompatActivity {
 
 
     }
+
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#d3d3d3"
+
     app:cardCornerRadius="20dp"
     android:orientation="vertical"
     app:cardElevation="3dp"
@@ -14,6 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:orientation="vertical"
         android:padding="10dp"
 
@@ -27,7 +28,7 @@
             android:layout_marginTop="20dp"
 
             android:text="TextView"
-            android:textColor="#c0c0c0"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
 
         <TextView
@@ -35,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="TextView"
-            android:textColor="#87ceeb"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
 
         <TextView
@@ -43,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="TextView"
-            android:textColor="#87ceeb"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
 
         <TextView
@@ -51,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="TextView"
-            android:textColor="#87ceeb"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
 
         <TextView
@@ -59,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="TextView"
-            android:textColor="#87ceeb"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
 
         <TextView
@@ -67,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="TextView"
-            android:textColor="#87ceeb"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
 
 
@@ -76,27 +77,27 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="TextView"
-            android:textColor="#87ceeb"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
         <TextView
             android:id="@+id/textView14"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="TextView"
-            android:textColor="#87ceeb"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
         <TextView
             android:id="@+id/textView15"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="TextView"
-            android:textColor="#87ceeb"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:text="DESTINATION - Airport"
-            android:textColor="#87ceeb"
+            android:textColor="#0000FF"
             android:textStyle="bold|italic" />
 
     </LinearLayout>

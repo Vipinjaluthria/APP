@@ -1,7 +1,12 @@
 package com.example.profileinformation;
 
-public class Modelclass {
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Modelclass implements Parcelable {
     private String NAME;
+    private String PHONE;
 
 
     private String DRIVERNAME;
@@ -16,6 +21,31 @@ public class Modelclass {
     private String CARNUMBER;
 
 
+    protected Modelclass(Parcel in) {
+        NAME = in.readString();
+        PHONE = in.readString();
+        DRIVERNAME = in.readString();
+        ADDITIONALLUGGAGE = in.readString();
+        CARNAME = in.readString();
+        TIME = in.readString();
+        CARCAPACITY = in.readString();
+        DATE = in.readString();
+        GENDER = in.readString();
+        CARNUMBER = in.readString();
+    }
+
+    public static final Creator<Modelclass> CREATOR = new Creator<Modelclass>() {
+        @Override
+        public Modelclass createFromParcel(Parcel in) {
+            return new Modelclass(in);
+        }
+
+        @Override
+        public Modelclass[] newArray(int size) {
+            return new Modelclass[size];
+        }
+    };
+
     public String getTIME() {
         return TIME;
     }
@@ -26,8 +56,9 @@ public class Modelclass {
     {
 
     }
-    public Modelclass(String carnumber,String gendre,String name,  String drivername, String additionalluggage, String carname,String date,String time,String carcapacity) {
+    public Modelclass(String contact,String carnumber,String gendre,String name,  String drivername, String additionalluggage, String carname,String date,String time,String carcapacity) {
        this. NAME = name;
+       this.PHONE=contact;
 
        this. DRIVERNAME = drivername;
       this.  GENDER=gendre;
@@ -50,6 +81,10 @@ public class Modelclass {
 
     public String getNAME() {
         return NAME;
+    }
+
+    public String getPHONE() {
+        return PHONE;
     }
 
     public String getCARNUMBER() {
@@ -75,5 +110,24 @@ public class Modelclass {
 
     public String getGENDER() {
         return GENDER;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(NAME);
+        dest.writeString(PHONE);
+        dest.writeString(DRIVERNAME);
+        dest.writeString(ADDITIONALLUGGAGE);
+        dest.writeString(CARNAME);
+        dest.writeString(TIME);
+        dest.writeString(CARCAPACITY);
+        dest.writeString(DATE);
+        dest.writeString(GENDER);
+        dest.writeString(CARNUMBER);
     }
 }

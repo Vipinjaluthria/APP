@@ -16,8 +16,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<ProductViewHolder>  {
-    List<Modelclass> modelclass;
-    recyclerviewclicklistner mrecyclerviewclicklistner;
+    private List<Modelclass> modelclass;
+    private recyclerviewclicklistner mrecyclerviewclicklistner;
 
 
     @NonNull
@@ -28,7 +28,7 @@ public class Adapter extends RecyclerView.Adapter<ProductViewHolder>  {
         return new ProductViewHolder(view, mrecyclerviewclicklistner);
     }
 
-    public Adapter(List<Modelclass> modelclass, recyclerviewclicklistner recyclerviewclicklistner) {
+    Adapter(List<Modelclass> modelclass, recyclerviewclicklistner recyclerviewclicklistner) {
         this.modelclass = modelclass;
         this.mrecyclerviewclicklistner = recyclerviewclicklistner;
     }
@@ -40,6 +40,7 @@ public class Adapter extends RecyclerView.Adapter<ProductViewHolder>  {
         String Carname = modelclass.get(position).getCARNAME();
         String carnumber = modelclass.get(position).getCARNUMBER();
         String carcapacity = modelclass.get(position).getCARCAPACITY();
+        String contact=modelclass.get(position).getPHONE();
 
         String gender = modelclass.get(position).getGENDER();
         String additionalluggage = modelclass.get(position).getADDITIONALLUGGAGE();

@@ -9,8 +9,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 class ProductViewHolder extends RecyclerView.ViewHolder{
     private View view;
-    FirebaseAuth firebaseAuth;
-    recyclerviewclicklistner recyclerviewclicklistner;
+    private FirebaseAuth firebaseAuth;
+    private recyclerviewclicklistner recyclerviewclicklistner;
 
 
 

@@ -3,7 +3,7 @@
     package="com.example.profileinformation">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,17 +12,19 @@
         android:roundIcon="@mipmap/profile"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChatActivity"/>
-        <activity android:name=".Verification"/>
-        <activity android:name=".phonenumber"/>
+        <activity android:name=".WhatsappChat"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".Verification" />
+        <activity android:name=".phonenumber" />
         <activity android:name=".Delete" />
         <activity android:name=".Updatebookings" />
         <activity android:name=".Searchbookings" />
         <activity
             android:name=".addbooking"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".profile"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".profile"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".firstactivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -34,7 +36,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

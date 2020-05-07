@@ -145,6 +145,7 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.delete :
                 drawerLayout.closeDrawer(GravityCompat.START);
+                profilecardview.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new Fragment_Delete()).commit();
                 break;
 

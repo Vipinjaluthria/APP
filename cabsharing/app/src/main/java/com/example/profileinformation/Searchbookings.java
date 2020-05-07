@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -68,7 +69,9 @@ public class Searchbookings extends AppCompatActivity implements recyclerviewcli
                 for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                     dialog.dismiss();
 
-                    Modelclass modelclass = new Modelclass("CARNUMBER - " + documentSnapshot.getString("CARNUMBER"), "GENDER - " + documentSnapshot.
+                    Modelclass modelclass = new Modelclass(""+documentSnapshot.
+                            getString("PHONE"),"CARNUMBER - " + documentSnapshot.
+                            getString("CARNUMBER"), "GENDER - " + documentSnapshot.
                             getString("GENDER"), "NAME - " + documentSnapshot.
                             getString("NAME"), "DRIVER NAMR - " + documentSnapshot.
                             getString("DRIVERNAME"), "ADDITIONAL LUGGAGE - " + documentSnapshot.
@@ -84,7 +87,6 @@ public class Searchbookings extends AppCompatActivity implements recyclerviewcli
                 adapter.notifyDataSetChanged();
 
                 recyclerView.setAdapter(adapter);
-
             }
         });
     }
@@ -121,7 +123,9 @@ public class Searchbookings extends AppCompatActivity implements recyclerviewcli
                             c.clear();
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                 dialog.dismiss();
-                                Modelclass modelclass = new Modelclass("CARNUMBER - " + documentSnapshot.getString("CARNUMBER"), "GENDER - " + documentSnapshot.
+                                Modelclass modelclass = new Modelclass(""+documentSnapshot.
+                                        getString("PHONE"), "CARNUMBER - " + documentSnapshot.
+                                        getString("CARNUMBER"), "GENDER - " + documentSnapshot.
                                         getString("GENDER"), "NAME - " + documentSnapshot.
                                         getString("NAME"), " DRIVERNAME - " + documentSnapshot.
                                         getString("DRIVERNAME"), "ADDITIONAL LUGGAGE - " + documentSnapshot.
@@ -161,6 +165,12 @@ public class Searchbookings extends AppCompatActivity implements recyclerviewcli
 
     @Override
     public void click(int position) {
+
+        String url = "https://api.whatsapp.com/send?phone="+c.get(position).getPHONE();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+
 
     }
 }

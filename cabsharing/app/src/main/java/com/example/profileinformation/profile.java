@@ -125,7 +125,7 @@ public class profile extends AppCompatActivity{
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(profile.this,googlesignin.class));
+                        startActivity(new Intent(getApplicationContext(),googlesignin.class));
                         revokeAccess();
                         // ...
                     }
@@ -137,7 +137,7 @@ public class profile extends AppCompatActivity{
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(profile.this, "account deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "SignOut", Toast.LENGTH_SHORT).show();
 
                         // ...
                     }

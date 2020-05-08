@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ExtraText">
+<group>
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/home"
+        />
+    <item
+        android:id="@+id/profile"
+
+        android:title="@string/profile"
+
+
+        android:icon="@drawable/profile"/>
+
+    <item android:id="@+id/Addbooking"
+    android:title="@string/add_bookings"
+        android:icon="@drawable/add"
+
+        >
+
+
+</item>
+    <item android:id="@+id/Searchbookings"
+
+        android:title="@string/search_bookings"
+
+        android:icon="@drawable/search">
+
+    </item>
+    <item
+        android:id="@+id/update"
+        android:icon="@drawable/update"
+        android:title="Update Bookings">
+
+    </item>
+    <item
+        android:id="@+id/delete"
+        android:title="Delete"
+
+        android:icon="@drawable/delete">
+
+    </item>
+    <item
+        android:icon="@drawable/info"
+        android:title="About Us"/>
+</group>
+
+</menu>

@@ -48,8 +48,10 @@ public class phonenumber extends AppCompatActivity {
         progressDialog = new ProgressDialog(phonenumber.this);
         progressDialog.create();
         progressDialog.setMessage("Wait.......");
+        Intent intent=getIntent();
+        userid=intent.getStringExtra("UID");
         progressDialog.show();
-        userid = firebaseAuth.getCurrentUser().getUid();
+
 
         progressDialog.dismiss();
         countryCodePicker = findViewById(R.id.country);

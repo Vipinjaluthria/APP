@@ -25,6 +25,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +42,7 @@ public class Fragment_UpdateBookings extends Fragment {
     FirebaseFirestore fstore;
     String userid;
     FirebaseAuth firebaseAuth;
+    GoogleSignInClient mGoogleSignInClient;
     ProgressDialog progressDialog;
     TextView date ,time;
     Button updatebtn;
@@ -70,11 +75,21 @@ public class Fragment_UpdateBookings extends Fragment {
         firebaseAuth=FirebaseAuth.getInstance();
         carcapcity=view.findViewById(R.id.carcapacity);
         progressDialog.setTitle("Loading...");
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+// Build a GoogleSignInClient with the options specified by g
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
+        GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getContext());
+
         progressDialog.show();
-        userid=firebaseAuth.getCurrentUser().getUid();
+        userid=account.getId();
         D.setVisibility(View.GONE);
         T.setVisibility(View.GONE);
-        fstore.collection("Bookings").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fstore.collection("BOOK").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot documentSnapshot = task.getResult();
@@ -87,8 +102,8 @@ public class Fragment_UpdateBookings extends Fragment {
                     carnumber.setText(documentSnapshot.getString("CARNUMBER"));
                     Gender.setText(documentSnapshot.getString("GENDER"));
                     drivername.setText(documentSnapshot.getString("DRIVERNAME"));
-                    carname.setText(" "+documentSnapshot.getString("CARNAME"));
-                    time.setText(" "+documentSnapshot.getString("TIME"));
+                    carname.setText(documentSnapshot.getString("CARNAME"));
+                    time.setText(documentSnapshot.getString("TIME"));
                     T.setText(documentSnapshot.getString("TIME"));
                     D.setText(documentSnapshot.getString("DATE"));
                     date.setText(documentSnapshot.getString("DATE"));
@@ -134,16 +149,16 @@ public class Fragment_UpdateBookings extends Fragment {
                 final String CARNAME = carname.getText().toString();
                 if ((GENDER.equals("MALE") || GENDER.equals("FEMALE")) && CARNUMBER.length() == 10 && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty() && !NAME.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty())
                 {
-                    fstore.collection("Bookings").document(userid).update("NAME", NAME);
+                    fstore.collection("BOOK").document(userid).update("NAME", NAME);
 
-                    fstore.collection("Bookings").document(userid).update("CARNUMBER", CARNUMBER);
-                    fstore.collection("Bookings").document(userid).update("CARNAME", CARNAME);
-                    fstore.collection("Bookings").document(userid).update("TIME", TIME);
-                    fstore.collection("Bookings").document(userid).update("DATE", DATE);
-                    fstore.collection("Bookings").document(userid).update("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE);
-                    fstore.collection("Bookings").document(userid).update("CARCAPACITY", CARCAPACITY);
-                    fstore.collection("Bookings").document(userid).update("GENDER", GENDER);
-                    fstore.collection("Bookings").document(userid).update("DRIVERNAME", DRIVERNAME);
+                    fstore.collection("BOOK").document(userid).update("CARNUMBER", CARNUMBER);
+                    fstore.collection("BOOK").document(userid).update("CARNAME", CARNAME);
+                    fstore.collection("BOOK").document(userid).update("TIME", TIME);
+                    fstore.collection("BOOK").document(userid).update("DATE", DATE);
+                    fstore.collection("BOOK").document(userid).update("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE);
+                    fstore.collection("BOK").document(userid).update("CARCAPACITY", CARCAPACITY);
+                    fstore.collection("BOOK").document(userid).update("GENDER", GENDER);
+                    fstore.collection("BOOK").document(userid).update("DRIVERNAME", DRIVERNAME);
                     progressDialog.setTitle("Updating");
                     progressDialog.show();
                     Handler handler = new Handler();

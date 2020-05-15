@@ -33,13 +33,16 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import org.w3c.dom.Document;
+
 import java.util.Objects;
 
 public class Fragment_Profile extends Fragment {
     FirebaseFirestore fstore;
+
     Toolbar profiletoolbar;
     String userid;
-    TextView name,email;
+    TextView name,email,verify;
     TextView NAME,EMAIL,PHONE;
     ImageView imageView;
     FirebaseAuth mfirebase;
@@ -54,6 +57,7 @@ public class Fragment_Profile extends Fragment {
         mfirebase=FirebaseAuth.getInstance();
         NAME=view.findViewById(R.id.name);
         PHONE=view.findViewById(R.id.phone);
+        verify=view.findViewById(R.id.verify);
         EMAIL=view.findViewById(R.id.email);
         imageView=view.findViewById(R.id.imageView3);
         logout=view.findViewById(R.id.button);
@@ -61,28 +65,52 @@ public class Fragment_Profile extends Fragment {
         name=view.findViewById(R.id.textView3);
 
 
+
         final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
         assert acct != null;
         final Uri personPhoto=acct.getPhotoUrl();
-        NAME.setText(" "+acct.getDisplayName());
-        EMAIL.setText(" "+acct.getEmail());
+        NAME.setText(acct.getDisplayName());
+        EMAIL.setText(acct.getEmail());
 
         Glide.with(getContext()).load(personPhoto).into(imageView);
 
+        userid=acct.getId();
+      DocumentReference documentReference=fstore.collection("PHONE").document(userid);
+              documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                  @Override
+                  public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                      String phone=documentSnapshot.getString("PHONE");
+                    PHONE.setText(documentSnapshot.getString("PHONE"));
+                    if(phone!=null)
+                    {
+                        verify.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        verify.setVisibility(View.VISIBLE);
+                    }
+
+                  }
+              });
+              verify.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      startActivity(new Intent(getContext(),phonenumber.class));
+                  }
+              });
 
 
-        userid= Objects.requireNonNull(mfirebase.getCurrentUser()).getUid();
-        DocumentReference myref =fstore.collection("PROFILE").document(userid);
-        myref.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                assert documentSnapshot != null;
-
-                PHONE.setText(" "+documentSnapshot.getString("PHONE"));
 
 
-            }
-        });
+
+
+
+
+
+
+
+
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

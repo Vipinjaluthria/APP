@@ -70,7 +70,8 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
         profilecardview = findViewById(R.id.profilecardview);
         fstore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        userid = firebaseAuth.getCurrentUser().getUid();
+        Intent intent = getIntent();
+        userid=intent.getStringExtra("UID");
         navigationView.setNavigationItemSelectedListener(this);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -144,9 +145,14 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
                 startActivity(new Intent(this, Searchbookings.class));
                 break;
             case R.id.profile:
+                Bundle bundle = new Bundle();
+                bundle.putString("UID", userid);
+                fragment=new Fragment_Profile();
+                fragment.setArguments(bundle);
                 toolbar.setTitle("Profile");
                 profilecardview.setVisibility(View.GONE);
-                fragment=new Fragment_Profile();
+
+
                 drawerLayout.closeDrawer(GravityCompat.START);
                 counter(fragment);
                 break;
@@ -189,6 +195,10 @@ public class firstactivity extends AppCompatActivity implements NavigationView.O
 
 
         }.start();
+    }
+    public String getUID()
+    {
+        return userid;
     }
 }
 

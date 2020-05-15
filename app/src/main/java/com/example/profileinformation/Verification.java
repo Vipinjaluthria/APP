@@ -14,6 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.internal.IAccountAccessor;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -27,6 +30,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Verification extends AppCompatActivity {
@@ -51,9 +55,14 @@ public class Verification extends AppCompatActivity {
         progressDialog=new ProgressDialog(Verification.this);
         fstore=FirebaseFirestore.getInstance();
         resend.setVisibility(View.GONE);
-        userid=firebaseAuth.getCurrentUser().getUid();
+
 
         number = getIntent().getStringExtra("phone");
+
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        userid=account.getId();
+
         Start();
 
                 verify.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +136,7 @@ public class Verification extends AppCompatActivity {
                                     progressDialog.setMessage("Wait......");
                                     progressDialog.show();
                                     Toast.makeText(Verification.this, "successfull", Toast.LENGTH_SHORT).show();
-                                    DocumentReference document=fstore.collection("PROFILE").document(userid);
+                                    DocumentReference document=fstore.collection("PHONE").document(userid);
                                     Map<String, Object> num = new HashMap<>();
                                     num.put("PHONE",number);
                                     document.set(num).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -135,27 +144,34 @@ public class Verification extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful())
                                             {
-                                                new CountDownTimer(3000, 1000) {
+                                                new CountDownTimer(5000, 1000) {
 
                                                     public void onTick(long millisUntilFinished) {
-
-                                                    }
-
-                                                    public void onFinish() {
-                                                        DocumentReference documentReference=fstore.collection("Bookings").document(userid);
+                                                     /*   DocumentReference documentReference=fstore.collection("Bookings").document(userid);
                                                         Map<String, Object> phone = new HashMap<>();
                                                         phone.put("PHONE",number);
-                                                        documentReference.set(phone,SetOptions.merge());
+                                                        documentReference.set(phone,SetOptions.merge());*/
+  }
+
+                                                    public void onFinish() {
+
                                                       progressDialog.dismiss();
-                                                      startActivity(new Intent(getApplicationContext(),firstactivity.class));
+                                                      Intent intent =new Intent(getApplicationContext(),firstactivity.class);
+                                                      intent.putExtra("UID",userid);
+                                                      startActivity(intent);
                                                       finish();
                                                     }
                                                 }.start();
                                             }
+                                            else
+                                            {
+                                                Toast.makeText(Verification.this, "Not updated", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                     });
 
-                                } else {
+                                }
+                                else {
                                     Toast.makeText(Verification.this, "verification failed", Toast.LENGTH_SHORT).show();
 
 

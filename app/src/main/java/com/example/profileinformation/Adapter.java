@@ -40,8 +40,6 @@ public class Adapter extends RecyclerView.Adapter<ProductViewHolder>  {
         String Carname = modelclass.get(position).getCARNAME();
         String carnumber = modelclass.get(position).getCARNUMBER();
         String carcapacity = modelclass.get(position).getCARCAPACITY();
-        String contact=modelclass.get(position).getPHONE();
-
         String gender = modelclass.get(position).getGENDER();
         String additionalluggage = modelclass.get(position).getADDITIONALLUGGAGE();
         String time = modelclass.get(position).getTIME();

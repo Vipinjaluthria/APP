@@ -23,6 +23,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -35,6 +39,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 
+import org.w3c.dom.Document;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,13 +51,14 @@ public class Fragment_addBookings extends Fragment {
     TextView Time, Date;
     String PHONE;
     AutoCompleteTextView Gender;
-
+    GoogleSignInClient mGoogleSignInClient;
     FirebaseFirestore fstore;
     Button datebtn;
     FirebaseAuth mfirebase;
+    String id;
     Toolbar toolbar;
     Button timebtn;
-    String userid;
+    String userid,Phone;
 
     @Nullable
     @Override
@@ -80,7 +87,19 @@ public class Fragment_addBookings extends Fragment {
         drivername = view.findViewById(R.id.driver);
         additionalluggage = view.findViewById(R.id.additionalluggage);
         Date.setVisibility(View.GONE);
-        userid = mfirebase.getCurrentUser().getUid();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+// Build a GoogleSignInClient with the options specified by g
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
+
+
+       final GoogleSignInAccount account= GoogleSignIn.getLastSignedInAccount(getContext());
+        userid=mfirebase.getCurrentUser().getUid();
+        id=account.getId();
         check();
         final String[] gender = {"MALE", "FEMALE"};
 
@@ -105,6 +124,14 @@ public class Fragment_addBookings extends Fragment {
 
 
         Button confirm = view.findViewById(R.id.button3);
+        fstore.collection("PHONE").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot=task.getResult();
+                Phone=documentSnapshot.getString("PHONE");
+
+            }
+        });
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,13 +147,8 @@ public class Fragment_addBookings extends Fragment {
                 final String DATE = D.getText().toString();
                 final String CARNUMBER = carnumber.getEditText().getText().toString();
                 String GENDER = Gender.getText().toString();
-
-
                 final String CARNAME = carname.getEditText().getText().toString();
 
-                if (CARNUMBER.isEmpty()) {
-
-                }
                 if (NAME.isEmpty()) {
                     name.setError("required");
                 }
@@ -162,10 +184,11 @@ public class Fragment_addBookings extends Fragment {
                 }
                 if ((GENDER.equals("MALE") || GENDER.equals("FEMALE")) && !CARNUMBER.isEmpty() && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty() && CARNUMBER.length() == 10 && !NAME.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty() && !DATE.isEmpty() && Date.length() == 9 && !TIME.isEmpty() && Time.length() <= 5 && Time.length() >= 4) {
                     Map<String, Object> user = new HashMap<>();
-                    DocumentReference myref = fstore.collection("Bookings").document(userid);
+                    DocumentReference myref = fstore.collection("BOOK").document(id);
                     user.put("DRIVERNAME", DRIVERNAME.toUpperCase());
                     user.put("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE.toUpperCase());
                     user.put("NAME", NAME.toUpperCase());
+                    user.put("PHONE",Phone);
                     user.put("CARCAPACITY", CARCAPACITY.toUpperCase());
                     user.put("TIME", TIME.toUpperCase());
                     user.put("DATE", DATE.toUpperCase());
@@ -191,7 +214,7 @@ public class Fragment_addBookings extends Fragment {
         return view;
     }
 
-    private void check() {
+    /*private void check() {
         fstore.collection("PROFILE").document(userid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
@@ -202,6 +225,22 @@ public class Fragment_addBookings extends Fragment {
                     startActivity(new Intent(getContext(), firstactivity.class));
 
                 }
+            }
+        });
+
+    }*/
+    private void check() {
+
+        fstore.collection("PHONE").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                if (documentSnapshot.getString("PHONE")==null) {
+                    Toast.makeText(getContext(), "verify phone number", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getContext(),firstactivity.class));
+                }
+
+
             }
         });
 

@@ -71,17 +71,16 @@ public class Updatebookings extends AppCompatActivity {
         carcapcity=findViewById(R.id.carcapacity);
         progressDialog.setTitle("Loading...");
         progressDialog.show();
-        userid=firebaseAuth.getCurrentUser().getUid();
         D.setVisibility(View.GONE);
         T.setVisibility(View.GONE);
-        fstore.collection("Bookings").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fstore.collection("BOOK").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot documentSnapshot = task.getResult();
+                assert documentSnapshot != null;
                 if(documentSnapshot.getString("DATE")!=null) {
 
                     name.setText(documentSnapshot.getString("NAME"));
-
                     carcapcity.setText(documentSnapshot.getString("CARCAPACITY"));
                     additionalluggage.setText(documentSnapshot.getString("ADDITIONALLUGGAGE"));
                     carnumber.setText(documentSnapshot.getString("CARNUMBER"));
@@ -121,29 +120,29 @@ public class Updatebookings extends AppCompatActivity {
         updatebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String DRIVERNAME = drivername.getText().toString();
+                final String DRIVERNAME = drivername.getText().toString().toUpperCase();
 
-                String ADDITIONAL_LUGGAGE = additionalluggage.getText().toString();
+                String ADDITIONAL_LUGGAGE = additionalluggage.getText().toString().toUpperCase();
 
-                final String NAME = name.getText().toString();
-                final String CARCAPACITY = carcapcity.getText().toString();
-                final String TIME = T.getText().toString();
-                final String DATE = D.getText().toString();
-                final String CARNUMBER=carnumber.getText().toString();
-                String GENDER =Gender.getText().toString();
-                final String CARNAME = carname.getText().toString();
+                final String NAME = name.getText().toString().toUpperCase();
+                final String CARCAPACITY = carcapcity.getText().toString().toUpperCase();
+                final String TIME = T.getText().toString().toUpperCase();
+                final String DATE = D.getText().toString().toUpperCase();
+                final String CARNUMBER=carnumber.getText().toString().toUpperCase();
+                String GENDER =Gender.getText().toString().toUpperCase();
+                final String CARNAME = carname.getText().toString().toUpperCase();
                 if ((GENDER.equals("MALE") || GENDER.equals("FEMALE")) && CARNUMBER.length() == 10 && !ADDITIONAL_LUGGAGE.isEmpty() && !CARCAPACITY.isEmpty() && !NAME.isEmpty() && !DRIVERNAME.isEmpty() && !CARNAME.isEmpty())
                 {
-                    fstore.collection("Bookings").document(userid).update("NAME", NAME);
+                    fstore.collection("BOOK").document(userid).update("NAME", NAME);
 
-                    fstore.collection("Bookings").document(userid).update("CARNUMBER", CARNUMBER);
-                    fstore.collection("Bookings").document(userid).update("CARNAME", CARNAME);
-                    fstore.collection("Bookings").document(userid).update("TIME", TIME);
-                    fstore.collection("Bookings").document(userid).update("DATE", DATE);
-                    fstore.collection("Bookings").document(userid).update("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE);
-                    fstore.collection("Bookings").document(userid).update("CARCAPACITY", CARCAPACITY);
-                    fstore.collection("Bookings").document(userid).update("GENDER", GENDER);
-                    fstore.collection("Bookings").document(userid).update("DRIVERNAME", DRIVERNAME);
+                    fstore.collection("BOOK").document(userid).update("CARNUMBER", CARNUMBER);
+                    fstore.collection("BOOK").document(userid).update("CARNAME", CARNAME);
+                    fstore.collection("BOOK").document(userid).update("TIME", TIME);
+                    fstore.collection("BOOK").document(userid).update("DATE", DATE);
+                    fstore.collection("BOOK").document(userid).update("ADDITIONALLUGGAGE", ADDITIONAL_LUGGAGE);
+                    fstore.collection("BOOK").document(userid).update("CARCAPACITY", CARCAPACITY);
+                    fstore.collection("BOOK").document(userid).update("GENDER", GENDER);
+                    fstore.collection("BOOK").document(userid).update("DRIVERNAME", DRIVERNAME);
                     progressDialog.setTitle("Updating");
                     progressDialog.show();
                     Handler handler = new Handler();

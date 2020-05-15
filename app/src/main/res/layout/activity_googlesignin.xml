@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/taxi"
+    android:background="@drawable/image21"
     tools:context=".googlesignin">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="  WELCOME TO CAB SHARING"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textSize="20dp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"

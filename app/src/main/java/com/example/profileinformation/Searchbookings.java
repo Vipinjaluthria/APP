@@ -62,7 +62,7 @@ public class Searchbookings extends AppCompatActivity implements recyclerviewcli
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         String date = day + "/" + month + "/" + year;
         c = new ArrayList<>();
-        fstore.collection("Bookings").orderBy("TIMESTAMP", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        fstore.collection("BOOK").orderBy("TIMESTAMP", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -73,7 +73,7 @@ public class Searchbookings extends AppCompatActivity implements recyclerviewcli
                             getString("PHONE"),"CARNUMBER - " + documentSnapshot.
                             getString("CARNUMBER"), "GENDER - " + documentSnapshot.
                             getString("GENDER"), "NAME - " + documentSnapshot.
-                            getString("NAME"), "DRIVER NAMR - " + documentSnapshot.
+                            getString("NAME"), "DRIVER NAME - " + documentSnapshot.
                             getString("DRIVERNAME"), "ADDITIONAL LUGGAGE - " + documentSnapshot.
                             getString("ADDITIONALLUGGAGE"), "CAB NAME - " + documentSnapshot.
                             getString("CARNAME"), "DATE - " + documentSnapshot.
@@ -113,7 +113,7 @@ public class Searchbookings extends AppCompatActivity implements recyclerviewcli
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                fstore.collection("Bookings").whereGreaterThanOrEqualTo("DATE", query.toUpperCase()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                fstore.collection("BOOK").whereGreaterThanOrEqualTo("DATE", query.toUpperCase()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {

@@ -126,8 +126,9 @@ public class googlesignin extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            userid=mfirebase.getCurrentUser().getUid();
-                            Check();
+                           startActivity(new Intent(getApplicationContext(),firstactivity.class));
+
+
                         }
                         else {
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
@@ -138,9 +139,10 @@ public class googlesignin extends AppCompatActivity {
                     }
                 });
     }
-    private void Check() {
+   /* private void Check() {
 
-        fstore.collection("PROFILE").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        fstore.collection("PHONE").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -150,16 +152,17 @@ public class googlesignin extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), firstactivity.class);
                         startActivity(intent);
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), phonenumber.class);
-                        startActivity(intent);
+                        Intent intent=new Intent(getApplicationContext(),phonenumber.class);
+                        intent.putExtra("UID",userid);
+                        startActivity(new Intent(intent));
                     }
                 }
 
             }
         });
+        }*/
 
 
-    }
 
 
     @Override
@@ -174,12 +177,7 @@ public class googlesignin extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),firstactivity.class));
             }
         }
-
-
     }
-
-
-
 }
 
 

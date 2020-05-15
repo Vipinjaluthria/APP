@@ -18,6 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +36,7 @@ public class Fragment_Delete extends Fragment {
     FirebaseFirestore fstore;
     String userid;
     ArrayAdapter adapter;
+    GoogleSignInClient mGoogleSignInClient;
     ProgressDialog progressDialog;
     TextView dbooking;
     ListView listView;
@@ -55,11 +60,21 @@ public class Fragment_Delete extends Fragment {
         progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Loading ......");
         progressDialog.show();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+// Build a GoogleSignInClient with the options specified by g
 
-        userid = firebaseAuth.getCurrentUser().getUid();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
+        GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getContext());
+
+        progressDialog.show();
+        userid=account.getId();
         final List<String> data = new ArrayList<>();
 
-        fstore.collection("Bookings").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fstore.collection("BOOK").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -96,7 +111,7 @@ public class Fragment_Delete extends Fragment {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fstore.collection("Bookings").document(userid).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                fstore.collection("BOOK").document(userid).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
